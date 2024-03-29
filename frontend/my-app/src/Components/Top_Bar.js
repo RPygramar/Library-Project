@@ -5,18 +5,16 @@ export default function Top_Bar() {
     <>
       <header className={styles.header}>
         <a href="#" className={styles.logo}>
-          Logo
+          OnLibrary
         </a>
-
         <nav className={styles.navbar}>
-          <a href="#">Home</a>
-          <a href="#">About</a>
-          <a href="#">Gallery</a>
-          <a href="#">Sevices</a>
+          <a href="">Home</a>
+          <a href="/livros">Livros</a>
+          <a href="/carrinho">Carrinho</a>
+          <a href="#">Services</a>
           <a href="#">Contact</a>
         </nav>
       </header>
-      <div className={styles.initial_image}></div>
     </>
   );
 }
