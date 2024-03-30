@@ -1,3 +1,4 @@
+
 * {
     margin: 0;
     padding: 0;
@@ -21,25 +22,25 @@
 }
 
 
-.navbar a {
-    position: relative;
-    font-size: 15px;
-    color: #000000;
-    font-weight: 500;
-    text-decoration: none;
-    margin-left: 40px;
-}
+/*.navbar a {*/
+/*    position: relative;*/
+/*    font-size: 15px;*/
+/*    color: #000000;*/
+/*    font-weight: 500;*/
+/*    text-decoration: none;*/
+/*    margin-left: 40px;*/
+/*}*/
 
-.navbar a::before{
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: #000000;
-    transition: 0.5s;
-}
-.navbar a:hover::before{
-    width: 100%;
-}
+/*.navbar a::before{*/
+/*    content: '';*/
+/*    position: absolute;*/
+/*    top: 100%;*/
+/*    left: 0;*/
+/*    width: 0;*/
+/*    height: 2px;*/
+/*    background: #000000;*/
+/*    transition: 0.5s;*/
+/*}*/
+/*.navbar a:hover::before{*/
+/*    width: 100%;*/
+/*}*/
