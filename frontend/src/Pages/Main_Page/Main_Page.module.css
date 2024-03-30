@@ -1,0 +1,92 @@
+.initial_image {
+    min-height: 35vh;
+    background: url('/public/images/shelve.jpeg') no-repeat;
+    background-position: top;
+    background-size: 100%;
+}
+
+.top_livros{
+    text-align: center;
+    color: white;
+    font-size: calc(8vh - 10px);
+    padding-top: 15vh;
+    font-family: sans-serif;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px #000000;;
+}
+
+.top_books{
+    height: 325px;
+    background: #292929;
+}
+
+.slider{
+    height: 360px;
+    margin: auto;
+    position: relative;
+    width: 100%;
+    display: grid;
+    place-items: center;
+    overflow-x: clip;
+}
+
+.slide_track{
+    display: flex;
+    width: calc(250px * 18);
+    animation: scroll 40s linear infinite;
+}
+
+.slide_track:hover{
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(calc(-250px*9));
+    }
+}
+
+.slide {
+    width: 250px;
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    perspective: 100px;
+
+}
+
+.slide img {
+    width: 100%;
+    height: 360px;
+    margin-top: -30px;
+}
+
+img:hover {
+    transform: translateZ(20px);
+    cursor: pointer;
+}
+
+.slider::before,
+.slider::after{
+    /*background: linear-gradient(to right, rgba(41,41,41,1) 0%,
+    rgba(41,41,41,0) 100%);*/
+    content: '';
+    height: 100%;
+    position: absolute;
+    width: 15%;
+    z-index: 2;
+}
+
+.slider::before{
+    left: 0;
+    top: 0;
+}
+
+.slider::after {
+    right: 0;
+    top: 0;
+    transform: rotate(180deg);
+}

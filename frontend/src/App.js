@@ -1,9 +1,10 @@
 import "./App.css";
-import Main_Page from "./pages/Main_Page";
-import Navbar from "./components/Navbar/Navbar";
+import Main_Page from "./Pages/Main_Page/Main_Page";
+import Navbar from "./Components/Navbar/Navbar";
 
 function App() {
-  return (<>
+  return (
+    <>
       <Navbar />
     </>
   );
