@@ -5,6 +5,23 @@ import { useState, useEffect } from "react";
 export default function Main_Page() {
   const [topBooks, setTopBooks] = useState([]);
 
+  const colors = {
+    1: "rgba(229,174,205,255)",
+    2: "rgba(134,208,222,255)",
+    3: "rgba(251,174,174,255)",
+    4: "rgba(0,240,97,255)",
+    5: "rgba(251,93,82,255)",
+    6: "rgba(227,55,123,255)",
+    7: "rgba(0,169,193,255)",
+    8: "rgba(177,72,217,255)",
+    9: "rgba(250,76,85,255)",
+  };
+
+  const getRandomColor = () => {
+    const randomNumber = Math.floor(Math.random() * 9) + 1; // Generates a random number between 1 and 9
+    return colors[randomNumber]; // Selects a color from the colors object based on the random number
+  };
+
   useEffect(() => {
     getTopBooks();
   }, []);
@@ -22,7 +39,18 @@ export default function Main_Page() {
   function renderTopBooks() {
     return topBooks.map((book) => (
       <div key={book.id} className={styles.slide}>
-        <img src={book.thumbnailUrl} alt={book.title} />
+        <div
+          className={styles.topBooksInformation}
+          style={{ backgroundColor: getRandomColor() }}
+        >
+          <img src={book.thumbnailUrl} alt={book.title} />
+          <div className={styles.topBookInfo}>
+            <h3>{book.title}</h3>
+            <p className={styles.authors}>by {book.authors.join(", ")}</p>
+            <p className={styles.shortDescription}>{book.shortDescription}</p>
+            <button className={styles.checkBookButton}>See The Book</button>
+          </div>
+        </div>
       </div>
     ));
   }
@@ -36,7 +64,7 @@ export default function Main_Page() {
         <div className={styles.slider}>
           <div
             className={styles.slide_track}
-            style={{ width: `calc(250px * ${topBooks.length} * 5)` }}
+            style={{ width: `calc(400px * ${topBooks.length} * 2)` }}
           >
             {renderTopBooks()}
             {renderTopBooks()}

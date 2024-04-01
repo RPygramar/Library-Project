@@ -45,9 +45,9 @@
     outline: none;
     background: #e0e0e0;
     height: 40px;
-    width: 35%;
-    padding: 0 10px;
-    margin-right: 30%;
+    width: 30%;
+    padding: 0px 1%;
+    margin-right: 0;
 }
 
 .search_box input {
