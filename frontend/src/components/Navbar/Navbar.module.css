@@ -14,6 +14,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
+    background-color: #ffffff;
 }
 
 
@@ -48,6 +49,7 @@
     width: 30%;
     padding: 0px 1%;
     margin-right: 0;
+    border-radius: 20px;
 }
 
 .search_box input {
