@@ -38,7 +38,6 @@ export default function BooksPage() {
 
     return (
         <>
-            <Navbar />
             {isDataLoaded && ( // Render FilterBar only when data is loaded
                 <FilterBar authors={authors} categorys={categorys} />
             )}

@@ -1,4 +1,4 @@
-import lordoftherings from '../../assets/lord_of_the_rings_1.jpg';
+
 import Styles from './BooksCards.module.css';
 import currency from '../../assets/icons/currency-eur.png';
 import basket from '../../assets/icons/shopping-basket.png'

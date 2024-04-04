@@ -1,9 +1,9 @@
 import { fetchAllBooks, fetchBookByID } from "../../fetchdata";
 import { useState, useEffect } from "react";
 import styles from "./Book_Page.module.css";
-import StarRate from "../../Components/starRate/starRate";
+import StarRate from "../../components/starRate/starRate";
 import { useParams } from "react-router-dom";
-import Footer from "../../Components/Footer/Footer";
+import Footer from "../../components/Footer/Footer";
 
 export default function Book_Page() {
   const [book, setBook] = useState({});
