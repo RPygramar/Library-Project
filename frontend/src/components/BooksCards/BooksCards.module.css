@@ -1,0 +1,91 @@
+.card {
+    position: relative;
+    float: left;
+    box-sizing: border-box;
+    width: 100%;
+    padding:10px; /* Optional: Add some padding around each item */
+}
+
+.bookLeftSide{
+    display: flex;
+    float: left;
+    width: 40%;
+}
+.bookLeftSide img{
+    width: 100%;
+    padding-right: 15px;
+}
+
+.bookRightSide {
+    display: flex;
+    width: 60%;
+    float: left;
+    padding-left: 10px;
+}
+
+
+
+.bookDescription h2 {
+    text-align: left;
+    font-weight: 700;
+    font-size: 24px;
+}
+
+.bookPrice {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 60%;
+
+}
+
+
+.bookPrice img {
+    width: 40px;
+    height: auto;
+}
+
+.bookPrice button {
+    width: 90px;
+    border: 2px solid #dc263d;
+    border-radius: 5px;
+    padding: 2px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.author a {
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+
+}
+
+.author{
+    padding-top: 20px;
+}
+
+.author span{
+    color: #28a745;
+    font-weight: bold;
+    font-size: 15px;
+
+}
+.author p{
+    padding-top: 4px;
+}
+
+
+.bookPrice h1{
+    color: #dc263d;
+    font-size: 40px;
+    font-weight: 700;
+    float: left;
+    justify-content: center;
+
+}
+
+
+

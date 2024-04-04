@@ -1,0 +1,30 @@
+.booksContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Horizontally center-align */
+    align-items: center;     /* Vertically center-align */
+    padding: 0;
+    padding-top: 20px;
+    list-style: none;
+    width: 90%; /* Reajustar mais tarde pois influencia na responsividade */
+    margin: 0 auto;   /* This will also center the container itself on the page */
+
+}
+
+.bookItem {
+    width: 50%;              /* Each item takes up 50% of the container width */
+    box-sizing: border-box;  /* Include padding and border in the width */
+    padding: 15px;           /* Optional: Add some padding around each item */
+}
+
+@media (max-width: 1200px) {
+    .bookItem {
+        flex: 0 0 calc(50% - 20px);
+    }
+}
+
+@media (max-width: 768px) {
+    .bookItem {
+        flex: 0 0 calc(100% - 20px);
+    }
+}
