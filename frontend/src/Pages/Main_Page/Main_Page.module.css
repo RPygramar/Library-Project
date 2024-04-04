@@ -16,8 +16,8 @@
 }
 
 .top_books{
-    height: 325px;
-    background: #292929;
+    height: 100%;
+    background: #ffffff
 }
 
 .slider{
@@ -32,7 +32,6 @@
 
 .slide_track{
     display: flex;
-    width: calc(250px * 18);
     animation: scroll 40s linear infinite;
 }
 
@@ -50,21 +49,22 @@
 }
 
 .slide {
-    width: 250px;
+    width: 700px;
     display: flex;
     align-items: center;
-    padding: 15px;
     perspective: 100px;
 
 }
 
 .slide img {
-    width: 100%;
-    height: 360px;
-    margin-top: -30px;
+    width: 40%;
+    height: 75%;
+    margin-left: 1%;
+    margin-top: 30%;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.9);
 }
 
-img:hover {
+.slide img:hover {
     transform: translateZ(20px);
     cursor: pointer;
 }
@@ -89,4 +89,61 @@ img:hover {
     right: 0;
     top: 0;
     transform: rotate(180deg);
+}
+
+.topBooksInformation{
+    width: 99%;
+    height: 360px;
+    background-color: #292929;
+    display: flex;
+    justify-content: space-between;
+}
+
+.topBookInfo{
+    color: white;
+    padding-left: 5%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+
+}
+.topBookInfo h3{
+    height: 50px;
+    margin-right: 0%;
+    margin-top: 5%;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.shortDescription{
+    height: 50%;
+    padding-top: 10px;
+    color: whitesmoke;
+    font-size: 11px;
+}
+
+.authors{
+    color: whitesmoke;
+    font-size: 10px;
+}
+
+.checkBookButton{
+    cursor: pointer;
+    color: black;
+    background-color: white;
+    width: 80%;
+    border-radius: 50px;
+    box-shadow: 00px 0px 10px 5px rgba(0, 0, 0, 0.3);
+    margin-left: 10%;
+    padding: 10px;
+}
+
+.main_divider{
+    width: 100%;
+    height: 10vh;
+}
+
+body{
+    background-color: #ffffff;
 }
