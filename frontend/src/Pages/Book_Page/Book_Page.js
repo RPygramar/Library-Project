@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import styles from "./Book_Page.module.css";
 import StarRate from "../../Components/starRate/starRate";
 import { useParams } from "react-router-dom";
+import Footer from "../../Components/Footer/Footer";
 
 export default function Book_Page() {
   const [book, setBook] = useState({});
@@ -40,7 +41,9 @@ export default function Book_Page() {
           </div>
           <div className={styles.book_info_button_div}>
             <div className={styles.price_row}>
-              <p className={styles.book_info_price}>15,00€</p>
+              <p className={styles.book_info_price}>
+                {book.price ? `${book.price}€` : "Não Disponivel"}
+              </p>
               <button className={styles.info_button}>i</button>
             </div>
             <button className={styles.book_info_button}>
@@ -80,6 +83,7 @@ export default function Book_Page() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

@@ -3,6 +3,7 @@ import { fetchAllBooks, fetchBookByID } from "../../fetchdata";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Book_Page from "../Book_Page/Book_Page";
+import Footer from "../../Components/Footer/Footer";
 
 export default function Main_Page() {
   const [topBooks, setTopBooks] = useState([]);
@@ -81,6 +82,7 @@ export default function Main_Page() {
         </div>
       </div>
       <div className={styles.main_divider}></div>
+      <Footer />
     </>
   );
 }
