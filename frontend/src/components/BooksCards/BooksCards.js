@@ -2,7 +2,7 @@
 import Styles from './BooksCards.module.css';
 import currency from '../../assets/icons/currency-eur.png';
 import basket from '../../assets/icons/shopping-basket.png'
-export default function BooksCards({bookURL, bookTitle, bookAuthor }){
+export default function BooksCards({bookURL, bookTitle, bookAuthor, bookPrice }){
     return <>
             <div className={Styles.card}>
                 <div className={Styles.bookLeftSide}>
@@ -17,7 +17,7 @@ export default function BooksCards({bookURL, bookTitle, bookAuthor }){
                             <p><span>Em stock</span></p></div>
                     </div>
                     <div className={Styles.bookPrice}>
-                        <h1>20,00$</h1>
+                        <h1>{bookPrice}</h1>
                         <button><img src={basket} alt="add-carrinho" className={Styles.basketIcon}/>
                             </button>
                     </div>
