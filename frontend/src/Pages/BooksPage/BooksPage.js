@@ -1,18 +1,18 @@
-import Navbar from "../../components/Navbar/Navbar";
 import BooksCards from "../../components/BooksCards/BooksCards";
-import {fetchAllBooks, fetchTenBooks} from "../../fetchdata";
+import {fetchAllBooks, fetchTenBooks, sortBooksByPrice} from "../../fetchdata";
 import React, { useState, useEffect } from 'react';
 import Styles from './BooksPage.module.css';
 import FilterBar from "../../components/FilterBar/FilterBar";
 import ReactPaginate from "react-paginate";
-import { Pagination } from "flowbite-react";
+
 export default function BooksPage() {
     const [books, setBooks] = useState([]);
     const [authors, setAuthors] = useState([]);
     const [categorys, setCategorys] = useState([]);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(5);
+    const [totalPages, setTotalPages] = useState(5); // Esta com um default, futuramente por uma equação
+
     const fetchData = async () => {
         try {
             const fetchedBooks = await fetchTenBooks(currentPage);
@@ -46,12 +46,34 @@ export default function BooksPage() {
         setCurrentPage(selectedPage); // Update currentPage state
     };
 
+    const  filterBooks = async (selectedAuthors, selectedCategories, selectedSort) => {
+        switch (selectedSort){
+            case "Preço (mais baixo)":
+                const sortedBooks = await sortBooksByPrice("price", 'asc');
+                setBooks(sortedBooks);
+                break;
+            case "Preço (mais alto)":
+                const sortedBooksDesc = await sortBooksByPrice("price", 'desc');
+                setBooks(sortedBooksDesc);
+                break;
+            case "Pontuação (mais alto)":
+                const sortedBooksScore = await sortBooksByPrice("score", 'desc');
+                setBooks(sortedBooksScore);
+                break;
+            case "Pontuação (mais baixa)":
+                const sortedBooksScoreDesc = await sortBooksByPrice("score", 'asc');
+                setBooks(sortedBooksScoreDesc);
+                break;
+        }
+
+
+    };
 
 
     return (
          <>
             {isDataLoaded && (
-                <FilterBar authors={authors} categorys={categorys} />
+                <FilterBar authors={authors} categorys={categorys} filterBooks={filterBooks} />
             )}
             <ul className={Styles.booksContainer}>
                 {books && books.length > 0 && books.map((book, index) => (

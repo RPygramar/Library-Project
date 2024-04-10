@@ -1,16 +1,35 @@
 import AsyncSelect from 'react-select/async';
-import React from 'react';
 import Styles from './FilterBar.module.css';
 import Select from "react-select";
-export default function FilterBar({ authors = [], categorys = [] }) {
+import React, {useEffect, useState} from 'react';
+export default function FilterBar({ authors = [], categorys = [], filterBooks }) {
     const formattedAuthors = authors ? authors.map((author) => ({ value: author, label: author })) : [];
     const formattedCategorys = categorys ? categorys.map((category) => ({ value: category, label: category })) : [];
 
+    const [selectedAuthors, setSelectedAuthors] = useState([]);
+    const [selectedCategorys, setSelectedCategorys] = useState([]);
+    const [selectedSort, setSelectedSort] = useState(null);
 
 
-    const handleChange = (selectedOption) => {
-        console.log(selectedOption);
+    useEffect(() => {
+        filterBooks(selectedAuthors, selectedCategorys, selectedSort);
+    }, [selectedAuthors, selectedCategorys, selectedSort]);
+    const handleChange = (selectedOption, action) => {
+
+        if(action.name ==='author'){
+            setSelectedAuthors(selectedOption)
+        }
+        if(action.name ==='category'){
+            setSelectedCategorys(selectedOption)
+        }
+        if(action.name ==='sort'){
+            console.log(selectedOption)
+            setSelectedSort(selectedOption.value)
+
+        }
+
     };
+
 
     const loadOptionsAuthors = (searchValue, callback) => {
     console.log("loadOptionsAuthors called");
@@ -18,7 +37,6 @@ export default function FilterBar({ authors = [], categorys = [] }) {
         const filteredOptions = formattedAuthors.filter((option) =>
             option.label.toLowerCase().includes(searchValue.toLowerCase())
         );
-        console.log('loadOptionsAuthors', searchValue, filteredOptions);
         callback(filteredOptions);
     }, 1000);
 };
@@ -29,7 +47,6 @@ export default function FilterBar({ authors = [], categorys = [] }) {
         const filteredOptions = formattedCategorys.filter((option) =>
             option.label.toLowerCase().includes(searchValue.toLowerCase())
         );
-        console.log('loadOptionsCategorys', searchValue, filteredOptions);
         callback(filteredOptions);
     }, 1000);
 };
@@ -48,14 +65,14 @@ export default function FilterBar({ authors = [], categorys = [] }) {
 
                     <div className={Styles.filterContainerLeftSide}>
                         <li><AsyncSelect loadOptions={loadOptionsAuthors} defaultOptions onChange={handleChange}
-                                         isMulti placeholder="Filtrar por autor"/>
+                                         isMulti placeholder="Filtrar por autor" name="author" defaultValue="Filtrar"/>
                         </li>
                         <li><AsyncSelect loadOptions={loadOptionsCategorys} defaultOptions onChange={handleChange}
-                                         isMulti placeholder="Filtrar por categoria"/>
+                                         isMulti placeholder="Filtrar por categoria" name="category" />
                         </li>
                     </div>
                     <div className={Styles.filterContainerRightSide}>
-                        <li><Select options={sortOptions} onChange={handleChange} placeholder="Ordenar por:"/></li>
+                        <li><Select options={sortOptions} onChange={handleChange} name="sort" placeholder="Ordenar por:"/></li>
                     </div>
 
 
