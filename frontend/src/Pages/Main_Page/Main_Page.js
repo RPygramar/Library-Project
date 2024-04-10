@@ -3,7 +3,7 @@ import { fetchAllBooks, fetchBookByID } from "../../fetchdata";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Book_Page from "../Book_Page/Book_Page";
-import Footer from "../../components/Footer/Footer";
+import Footer from "../../Components/Footer/Footer";
 
 export default function Main_Page() {
   const [topBooks, setTopBooks] = useState([]);

@@ -1,18 +1,18 @@
-import BooksCards from "../../components/BooksCards/BooksCards";
-import {fetchAllBooks, fetchTenBooks, sortBooksByPrice} from "../../fetchdata";
-import React, { useState, useEffect } from 'react';
-import Styles from './BooksPage.module.css';
-import FilterBar from "../../components/FilterBar/FilterBar";
+import Navbar from "../../Components/Navbar/Navbar";
+import BooksCards from "../../Components/BooksCards/BooksCards";
+import { fetchAllBooks, fetchTenBooks } from "../../fetchdata";
+import React, { useState, useEffect } from "react";
+import Styles from "./BooksPage.module.css";
+import FilterBar from "../../Components/FilterBar/FilterBar";
 import ReactPaginate from "react-paginate";
-
+import { Pagination } from "flowbite-react";
 export default function BooksPage() {
     const [books, setBooks] = useState([]);
     const [authors, setAuthors] = useState([]);
     const [categorys, setCategorys] = useState([]);
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(5); // Esta com um default, futuramente por uma equação
-
+    const [totalPages, setTotalPages] = useState(5);
     const fetchData = async () => {
         try {
             const fetchedBooks = await fetchTenBooks(currentPage);
@@ -46,6 +46,42 @@ export default function BooksPage() {
         setCurrentPage(selectedPage); // Update currentPage state
     };
 
+  return (
+    <>
+      {isDataLoaded && <FilterBar authors={authors} categorys={categorys} />}
+      <ul className={Styles.booksContainer}>
+        {books &&
+          books.length > 0 &&
+          books.map((book, index) => (
+            <li key={index} className={Styles.bookItem}>
+              <BooksCards
+                bookURL={book.thumbnailUrl}
+                bookTitle={book.title}
+                bookAuthor={
+                  book.authors ? book.authors.join(", ") : "Unknown Author"
+                }
+                bookPrice={`${book.price} €`}
+              />
+            </li>
+          ))}
+      </ul>
+      <div>
+        <ReactPaginate
+          previousLabel={"< Anterior"}
+          nextLabel={"Próximo >"}
+          breakLabel={"..."}
+          pageCount={totalPages}
+          onPageChange={handlePageClick}
+          containerClassName={Styles.pagination}
+          pageLinkClassName={Styles.pageNum}
+          pageItemClassName={Styles.pageNum}
+          previousLinkClassName={Styles.pageNum}
+          nextLinkClassName={Styles.pageNum}
+          activeClassName={Styles.active}
+        />
+      </div>
+      <Footer />
+    </>
     const  filterBooks = async (selectedAuthors, selectedCategories, selectedSort) => {
         switch (selectedSort){
             case "Preço (mais baixo)":
