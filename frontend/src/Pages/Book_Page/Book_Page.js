@@ -1,9 +1,9 @@
 import { fetchAllBooks, fetchBookByID } from "../../fetchdata";
 import { useState, useEffect } from "react";
 import styles from "./Book_Page.module.css";
-import StarRate from "../../components/starRate/starRate";
+import StarRate from "../../Components/starRate/starRate";
 import { useParams } from "react-router-dom";
-import Footer from "../../components/Footer/Footer";
+import Footer from "../../Components/Footer/Footer";
 
 export default function Book_Page() {
   const [book, setBook] = useState({});
@@ -33,7 +33,7 @@ export default function Book_Page() {
         <div className={styles.book_info}>
           <div className={styles.book_info_title}>{book.title}</div>
           <div className={styles.book_info_authors}>
-            de {book?.authors ? `de ${book.authors.join(", ")}` : ""}
+            de {book?.authors ? `${book.authors.join(", ")}` : ""}
           </div>
           <p className={styles.status}>{book.status}</p>
           <div className={styles.star_score}>

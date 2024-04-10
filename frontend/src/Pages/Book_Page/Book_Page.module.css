@@ -57,7 +57,7 @@ body{
 }
 
 .book_info_button span{
-    font-size: calc(2vh - 1px);
+    font-size: 60%;
 }
 
 .book_info_button:hover{
@@ -72,21 +72,21 @@ body{
 }
 
 .book_info_price{
-    font-size: 3vh;
+    font-size: 100%;
     font-weight: bold;
     padding-bottom: 1%;
     color: #de5e35;
-    padding-left: 20%;
+    padding-right: 5%;
 }
 
 .price_row{
     display: flex;
-    align-items: row;
+    width: 60%;
+    justify-content: flex-end;
 }
 
 .info_button{
-    margin-left: 6%;
-    width: 5%;
+    width: 10%;
     background-color: #c7c5c2;
     color: #292929;
     font-size: 20px;

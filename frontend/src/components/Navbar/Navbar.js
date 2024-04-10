@@ -1,6 +1,7 @@
 import styles from "./Navbar.module.css";
 import logo from "../../assets/colares_sintra_logo.png";
 import React, { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 export default function Navbar() {
   const [searchInput, setSearchInput] = useState("");
@@ -13,7 +14,7 @@ export default function Navbar() {
   return (
     <>
       <header className={styles.header}>
-        <img className={styles.image} src={logo}></img>
+        <img className={styles.image} src={logo} onClick={handleChange}></img>
         <div className={styles.search_box}>
           <input
             type="search"
@@ -24,7 +25,7 @@ export default function Navbar() {
         </div>
         <ul className={styles.ulclass}>
           <li>
-            <a href="">Home</a>
+            <a href="/">Home</a>
           </li>
           <li>
             <a href="/livros">Livros</a>
