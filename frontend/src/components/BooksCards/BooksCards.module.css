@@ -49,7 +49,7 @@
 
 .bookPrice button {
     width: 90px;
-    border: 2px solid #dc263d;
+    border: 2px solid #de5e35;
     border-radius: 5px;
     padding: 2px;
     background-color: white;
@@ -79,8 +79,8 @@
 
 
 .bookPrice h1{
-    color: #dc263d;
-    font-size: 40px;
+    color: #de5e35;
+    font-size: calc(40px - 50%);
     font-weight: 700;
     float: left;
     justify-content: center;

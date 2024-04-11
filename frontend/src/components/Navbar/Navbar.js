@@ -2,6 +2,7 @@ import styles from "./Navbar.module.css";
 import logo from "../../assets/colares_sintra_logo.png";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
 export default function Navbar() {
   const [searchInput, setSearchInput] = useState("");
@@ -31,13 +32,15 @@ export default function Navbar() {
             <a href="/livros">Livros</a>
           </li>
           <li>
-            <a href="/carrinho">Carrinho</a>
-          </li>
-          <li>
             <a href="#">Services</a>
           </li>
           <li>
             <a href="#">Contact</a>
+          </li>
+          <li>
+            <a href="/carrinho">
+              <AiOutlineShoppingCart size={25} />
+            </a>
           </li>
         </ul>
       </header>

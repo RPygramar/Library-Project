@@ -42,7 +42,9 @@ export default function Book_Page() {
           <div className={styles.book_info_button_div}>
             <div className={styles.price_row}>
               <p className={styles.book_info_price}>
-                {book.price ? `${book.price}€` : "Não Disponivel"}
+                {book.price
+                  ? `${parseFloat(book.price).toFixed(2)}€`
+                  : "Não Disponivel"}
               </p>
               <button className={styles.info_button}>i</button>
             </div>
@@ -78,7 +80,7 @@ export default function Book_Page() {
               Páginas: <span className={styles.bold}>{book.pageCount}</span>
             </p>
             <p className={styles.details_score}>
-              Score: {<StarRate stars={book.score} size={12} />}
+              Score: {<StarRate stars={book.score} size={15} />}
             </p>
           </div>
         </div>
