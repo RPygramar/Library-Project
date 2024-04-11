@@ -12,20 +12,23 @@ export default function FilterBar({ authors = [], categorys = [], filterBooks })
 
 
     useEffect(() => {
-        filterBooks(selectedAuthors, selectedCategorys, selectedSort);
+        console.log(selectedAuthors, selectedCategorys, selectedSort);
+        if (selectedSort != null || selectedAuthors.length !== 0 || selectedCategorys.length !== null) {
+            filterBooks(selectedAuthors, selectedCategorys, selectedSort);
+            console.log("filterBooks called")
+        };
     }, [selectedAuthors, selectedCategorys, selectedSort]);
+
     const handleChange = (selectedOption, action) => {
 
         if(action.name ==='author'){
-            setSelectedAuthors(selectedOption)
+            setSelectedAuthors(selectedOption.value)
         }
         if(action.name ==='category'){
-            setSelectedCategorys(selectedOption)
+            setSelectedCategorys(selectedOption.value)
         }
         if(action.name ==='sort'){
-            console.log(selectedOption)
             setSelectedSort(selectedOption.value)
-
         }
 
     };

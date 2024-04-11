@@ -30,10 +30,10 @@ export async function fetchTenBooks(page) {
   }
 }
 
-export async function sortBooksByPrice(value, order): Promise<any> {
+export async function sortBooksByPrice(value, order, page) {
   try {
-    const orderValue = order === "asc" ? "" : "-";
-    const response = await fetch(`http://localhost:3030/books?_sort=${orderValue}${value}`);
+    const orderVal = order === "asc" ? "" : "-";
+    const response = await fetch(`http://localhost:3030/books?_page=${page}&_sort=${orderVal}${value}`);
 
     if (!response.ok) {
       throw new Error("Error loading data");
