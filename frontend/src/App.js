@@ -5,8 +5,17 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Book_Page from "./Pages/Book_Page/Book_Page";
 import BooksPage from "./Pages/BooksPage/BooksPage";
 import Cart_Page from "./Pages/Cart_Page/Cart_Page";
-
+import {createContext, useState} from "react";
+export const CartContext = createContext();
 function App() {
+  const [cart, setCart] = useState([]);
+  function atualizarContext(book) {
+    setCart((prevCart) => {
+      return [...prevCart, book];
+
+    });
+  }
+
   return (
     <>
       <Router>

@@ -7,7 +7,7 @@ export default function BooksCards({
   bookAuthor,
   bookPrice,
 }) {
-  console.log(bookPrice);
+
   return (
     <>
       <div className={Styles.card}>

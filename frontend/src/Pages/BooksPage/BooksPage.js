@@ -1,6 +1,6 @@
 
 import BooksCards from "../../components/BooksCards/BooksCards";
-import {fetchAllBooks, fetchTenBooks, sortBooksByPrice} from "../../fetchdata";
+import {fetchAllBooks, fetchTenBooks, retrieveBooksByAuthorOrCat, sortBooksByPrice} from "../../fetchdata";
 import React, { useState, useEffect } from "react";
 import Styles from "./BooksPage.module.css";
 import FilterBar from "../../components/FilterBar/FilterBar";
@@ -20,6 +20,7 @@ export default function BooksPage() {
         try {
             const fetchedBooks = await fetchTenBooks(currentPage);
             setBooks(fetchedBooks.data);
+            setTotalPages(fetchedBooks.pages);
 
             const fetchAllBooksData = await fetchAllBooks();
 
@@ -40,8 +41,16 @@ export default function BooksPage() {
     };
     const  filterBooks = async (selectedAuthors, selectedCategories, selectedSort) => {
         setSelectedSort(selectedSort);
-
-
+        console.log('Selected authors:', selectedAuthors, 'Selected categories:', selectedCategories, 'Selected sort:', selectedSort)
+        if (selectedAuthors.length !==0  || selectedCategories.length !== 0 ) {
+            const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthors, selectedCategories);
+            console.log('Filtered books:', filteredBooks)
+            setBooks(filteredBooks);
+            setTotalPages(books.length/10)
+        }
+        else {
+            fetchData()
+        }
         switch (selectedSort){
             case "Preço (mais baixo)":
                 setIsBeingSorted(true)
@@ -69,7 +78,7 @@ export default function BooksPage() {
     };
 
     useEffect(() => {
-        console.log('Current page:', currentPage, "sortes:",isBeingSorted);
+
         if (isBeingSorted) {
             filterBooks([], [], selectedSort)
         }

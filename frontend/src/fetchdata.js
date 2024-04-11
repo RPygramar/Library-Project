@@ -30,6 +30,38 @@ export async function fetchTenBooks(page) {
   }
 }
 
+export async function retrieveBooksByAuthorOrCat(authors, category) {
+  try {
+
+    const response = await fetch(`http://localhost:3030/books?`);
+    const result = await response.json();
+    console.log("filtering")
+    if(category.length === 0 && authors.length > 0){
+    const filteredBooks = result.filter(book => {
+      return (authors.some(author => book.authors.includes(author)));}
+    );
+    return filteredBooks;
+    }
+    if(authors.length === 0 && category.length > 0){
+      const filteredBooks = result.filter(book => {
+        return (category.some(cat => book.categories.includes(cat)));}
+      );
+      return filteredBooks;
+    }
+    if(authors.length > 0 && category.length > 0){
+      const filteredBooks = result.filter(book => {
+        return (authors.some(author => book.authors.includes(author)) && category.some(cat => book.categories.includes(cat)));}
+      );
+      return filteredBooks;
+    }
+  } catch (error) {
+    console.error("An error occurred: ", error);
+    throw error; // re-throw the error to be handled by the caller
+  }
+}
+
+
+
 export async function sortBooksByPrice(value, order, page) {
   try {
     const orderVal = order === "asc" ? "" : "-";
