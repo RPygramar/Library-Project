@@ -22,17 +22,18 @@ function App() {
 
   return (
     <>
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Main_Page />} />
-          <Route path="/livro">
-            <Route path="/livro/:bookID" element={<Book_Page />}></Route>
-          </Route>
-          <Route path="/livros" element={<BooksPage />} />
-          <Route path="/carrinho" element={<Cart_Page />} />
-        </Routes>
-      </Router>
+      <CartContext.Provider value={{ cart, setCart, atualizarContext }}>
+        <Router>
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Main_Page />} />
+            <Route path="/livro/:bookID" element={<Book_Page />} />
+            <Route path="/livros" element={<BooksPage />} />
+            <Route path="/carrinho" element={<Cart_Page />} />
+          </Routes>
+        </Router>
+      </CartContext.Provider>
+      <Footer />
     </>
   );
 }

@@ -2,7 +2,7 @@ import Styles from "./BooksCards.module.css";
 import currency from "../../assets/icons/currency-eur.png";
 import basket from "../../assets/icons/shopping-basket.png";
 import { BsCartPlus } from "react-icons/bs";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { CartContext } from "../../App";
 
 export default function BooksCards({
@@ -35,12 +35,8 @@ export default function BooksCards({
                 ? "Sob consulta"
                 : parseFloat(bookPrice).toFixed(2) + "€"}{" "}
             </h1>
-            <button>
-              <img
-                src={basket}
-                alt="add-carrinho"
-                className={Styles.basketIcon}
-              />
+            <button onClick={() => atualizarContext(book)}>
+              <BsCartPlus size={35} color="#de5e35" />
             </button>
           </div>
         </div>

@@ -82,7 +82,6 @@ export default function Main_Page() {
         </div>
       </div>
       <div className={styles.main_divider}></div>
-      <Footer />
     </>
   );
 }

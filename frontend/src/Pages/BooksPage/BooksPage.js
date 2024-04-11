@@ -1,4 +1,4 @@
-
+import {retrieveBooksByAuthorOrCat} from "../../fetchdata";
 import BooksCards from "../../components/BooksCards/BooksCards";
 import {fetchAllBooks, fetchTenBooks, sortBooksByPrice} from "../../fetchdata";
 import React, { useState, useEffect } from "react";
@@ -42,7 +42,7 @@ export default function BooksPage() {
     const  filterBooks = async (selectedAuthors, selectedCategories, selectedSort) => {
         setSelectedSort(selectedSort);
         console.log('Selected authors:', selectedAuthors, 'Selected categories:', selectedCategories, 'Selected sort:', selectedSort)
-        if (selectedAuthors.length !==0  || selectedCategories.length !== 0 ) {
+        if ((selectedAuthors.length !==0  || selectedCategories.length !== 0)  && (selectedSort === null || selectedSort === "Nenhum")) {
             const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthors, selectedCategories);
             console.log('Filtered books:', filteredBooks)
             setBooks(filteredBooks);
@@ -51,6 +51,7 @@ export default function BooksPage() {
         else {
             fetchData()
         }
+
         switch (selectedSort){
             case "Preço (mais baixo)":
                 setIsBeingSorted(true)
@@ -134,7 +135,7 @@ export default function BooksPage() {
           activeClassName={Styles.active}
         />
       </div>
-      <Footer />
+
     </>
 
   );
