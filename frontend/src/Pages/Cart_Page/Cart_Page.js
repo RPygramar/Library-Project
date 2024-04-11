@@ -8,7 +8,7 @@ import { BsCartPlus } from "react-icons/bs";
 import { CartContext } from "../../App";
 
 export default function Book_Page() {
-  const { cart } = useContext(CartContext);
+  const { cart, setCart, atualizarContext } = useContext(CartContext);
   useEffect(() => {
     console.log(cart);
   }, [cart]);

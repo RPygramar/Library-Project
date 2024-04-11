@@ -4,9 +4,11 @@ import basket from "../../assets/icons/shopping-basket.png";
 import { BsCartPlus } from "react-icons/bs";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../../App";
+import { NavLink } from "react-router-dom";
 
 export default function BooksCards({
   book,
+  bookid,
   bookURL,
   bookTitle,
   bookAuthor,
@@ -21,7 +23,9 @@ export default function BooksCards({
         </div>
         <div className={Styles.bookRightSide}>
           <div className={Styles.bookDescription}>
-            <h2>{bookTitle}</h2>
+            <NavLink to={`/livro/${bookid}`}>
+              <h2>{bookTitle}</h2>
+            </NavLink>
             <div className={Styles.author}>
               <a>{bookAuthor}</a>
               <p>

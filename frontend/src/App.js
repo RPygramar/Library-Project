@@ -28,7 +28,6 @@ function App() {
           <Routes>
             <Route path="/" element={<Main_Page />} />
             <Route path="/livro/:bookID" element={<Book_Page />} />
-
             <Route path="/livros" element={<BooksPage />} />
             <Route path="/carrinho" element={<Cart_Page />} />
           </Routes>

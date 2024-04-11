@@ -117,6 +117,7 @@ export default function BooksPage() {
             <li key={index} className={Styles.bookItem}>
               <BooksCards
                 book={book}
+                bookid={book.id}
                 bookURL={book.thumbnailUrl}
                 bookTitle={book.title}
                 bookAuthor={
