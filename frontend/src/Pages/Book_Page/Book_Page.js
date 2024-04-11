@@ -1,18 +1,21 @@
 import { fetchAllBooks, fetchBookByID } from "../../fetchdata";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import styles from "./Book_Page.module.css";
 import StarRate from "../../components/starRate/starRate";
 import { useParams } from "react-router-dom";
-import Footer from "../../components/Footer/Footer";
+import { CartContext } from "../../App";
 
 export default function Book_Page() {
+  const { cart, setCart, atualizarContext } = useContext(CartContext);
+
   const [book, setBook] = useState({});
 
   const { bookID } = useParams();
 
   useEffect(() => {
     getBookId();
-  }, []);
+    console.log(cart);
+  }, [cart]);
 
   function getBookId() {
     fetchBookByID(bookID)
@@ -48,7 +51,10 @@ export default function Book_Page() {
               </p>
               <button className={styles.info_button}>i</button>
             </div>
-            <button className={styles.book_info_button}>
+            <button
+              onClick={() => atualizarContext(book)}
+              className={styles.book_info_button}
+            >
               <span>Adicionar ao Carrinho</span>
             </button>
           </div>
@@ -85,7 +91,6 @@ export default function Book_Page() {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }
