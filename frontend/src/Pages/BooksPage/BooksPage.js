@@ -13,6 +13,9 @@ export default function BooksPage() {
     const [isDataLoaded, setIsDataLoaded] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(5);
+    const [selectedSort, setSelectedSort] = useState(null);
+    const [isBeingSorted, setIsBeingSorted] = useState(false);
+
     const fetchData = async () => {
         try {
             const fetchedBooks = await fetchTenBooks(currentPage);
@@ -36,22 +39,29 @@ export default function BooksPage() {
         }
     };
     const  filterBooks = async (selectedAuthors, selectedCategories, selectedSort) => {
+        setSelectedSort(selectedSort);
+
+
         switch (selectedSort){
             case "Preço (mais baixo)":
-                const sortedBooks = await sortBooksByPrice("price", 'asc');
-                setBooks(sortedBooks);
+                setIsBeingSorted(true)
+                const sortedBooks = await sortBooksByPrice("price", 'asc', currentPage);
+                setBooks(sortedBooks.data);
                 break;
             case "Preço (mais alto)":
-                const sortedBooksDesc = await sortBooksByPrice("price", 'desc');
-                setBooks(sortedBooksDesc);
+                setIsBeingSorted(true)
+                const sortedBooksDesc = await sortBooksByPrice("price", 'desc', currentPage);
+                setBooks(sortedBooksDesc.data);
                 break;
             case "Pontuação (mais alto)":
-                const sortedBooksScore = await sortBooksByPrice("score", 'desc');
-                setBooks(sortedBooksScore);
+                setIsBeingSorted(true)
+                const sortedBooksScore = await sortBooksByPrice("score", 'desc', currentPage);
+                setBooks(sortedBooksScore.data);
                 break;
             case "Pontuação (mais baixa)":
-                const sortedBooksScoreDesc = await sortBooksByPrice("score", 'asc');
-                setBooks(sortedBooksScoreDesc);
+                setIsBeingSorted(true)
+                const sortedBooksScoreDesc = await sortBooksByPrice("score", 'asc', currentPage);
+                setBooks(sortedBooksScoreDesc.data);
                 break;
         }
 
@@ -59,7 +69,13 @@ export default function BooksPage() {
     };
 
     useEffect(() => {
-        fetchData().then(r => console.log('Data fetched', books.data));
+        console.log('Current page:', currentPage, "sortes:",isBeingSorted);
+        if (isBeingSorted) {
+            filterBooks([], [], selectedSort)
+        }
+        else {
+            fetchData().then(r => console.log('Data fetched', books.data));}
+
     }, [currentPage]); // Run fetchData whenever the currentPage changes
 
     const handlePageClick = (data) => {
@@ -82,7 +98,7 @@ export default function BooksPage() {
                 bookAuthor={
                   book.authors ? book.authors.join(", ") : "Unknown Author"
                 }
-                bookPrice={`${book.price} €`}
+                bookPrice={`${book.price}`}
               />
             </li>
           ))}
