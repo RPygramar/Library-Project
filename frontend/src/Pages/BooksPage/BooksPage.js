@@ -1,6 +1,6 @@
 
 import BooksCards from "../../components/BooksCards/BooksCards";
-import {fetchAllBooks, fetchTenBooks, retrieveBooksByAuthorOrCat, sortBooksByPrice} from "../../fetchdata";
+import {fetchAllBooks, fetchTenBooks, sortBooksByPrice} from "../../fetchdata";
 import React, { useState, useEffect } from "react";
 import Styles from "./BooksPage.module.css";
 import FilterBar from "../../components/FilterBar/FilterBar";
@@ -95,13 +95,20 @@ export default function BooksPage() {
 
   return (
     <>
-      {isDataLoaded && <FilterBar authors={authors} categorys={categorys} filterBooks={filterBooks}/>}
+      {isDataLoaded && (
+        <FilterBar
+          authors={authors}
+          categorys={categorys}
+          filterBooks={filterBooks}
+        />
+      )}
       <ul className={Styles.booksContainer}>
         {books &&
           books.length > 0 &&
           books.map((book, index) => (
             <li key={index} className={Styles.bookItem}>
               <BooksCards
+                book={book}
                 bookURL={book.thumbnailUrl}
                 bookTitle={book.title}
                 bookAuthor={

@@ -26,21 +26,21 @@ export default function Navbar() {
         </div>
         <ul className={styles.ulclass}>
           <li>
-            <a href="/">Home</a>
+            <NavLink to="/">Home</NavLink>
           </li>
           <li>
-            <a href="/livros">Livros</a>
+            <NavLink to="/livros">Livros</NavLink>
           </li>
           <li>
-            <a href="#">Services</a>
+            <NavLink to="#">Services</NavLink>
           </li>
           <li>
-            <a href="#">Contact</a>
+            <NavLink to="#">Contact</NavLink>
           </li>
           <li>
-            <a href="/carrinho">
+            <NavLink to="/carrinho">
               <AiOutlineShoppingCart size={25} />
-            </a>
+            </NavLink>
           </li>
         </ul>
       </header>
