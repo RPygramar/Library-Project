@@ -12,20 +12,15 @@ export default function FilterBar({ authors = [], categorys = [], filterBooks })
 
 
     useEffect(() => {
-        console.log(selectedAuthors, selectedCategorys, selectedSort);
-        if (selectedSort != null || selectedAuthors.length !== 0 || selectedCategorys.length !== null) {
-            filterBooks(selectedAuthors, selectedCategorys, selectedSort);
-            console.log("filterBooks called")
-        };
+        filterBooks(selectedAuthors, selectedCategorys, selectedSort);
     }, [selectedAuthors, selectedCategorys, selectedSort]);
 
     const handleChange = (selectedOption, action) => {
-
         if(action.name ==='author'){
-            setSelectedAuthors(selectedOption.value)
+            setSelectedAuthors(selectedOption.map(option => option.value))
         }
         if(action.name ==='category'){
-            setSelectedCategorys(selectedOption.value)
+            setSelectedCategorys(selectedOption.map(option => option.value))
         }
         if(action.name ==='sort'){
             setSelectedSort(selectedOption.value)
@@ -57,7 +52,8 @@ export default function FilterBar({ authors = [], categorys = [], filterBooks })
         {value:"Preço (mais baixo)", label: "Preço (mais baixo)"},
         {value:"Preço (mais alto)", label: "Preço (mais alto)"},
         {value:"Pontuação (mais alto)", label: "Pontuação (mais alto)"},
-        {value:"Pontuação (mais baixa)", label: "Pontuação (mais baixa)"}
+        {value:"Pontuação (mais baixa)", label: "Pontuação (mais baixa)"},
+        {value: "Nenhum", label: "Nenhum"}
     ]
 
     return (
@@ -77,7 +73,6 @@ export default function FilterBar({ authors = [], categorys = [], filterBooks })
                     <div className={Styles.filterContainerRightSide}>
                         <li><Select options={sortOptions} onChange={handleChange} name="sort" placeholder="Ordenar por:"/></li>
                     </div>
-
 
                 </div>
             </div>

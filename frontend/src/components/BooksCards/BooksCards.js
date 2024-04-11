@@ -2,7 +2,7 @@ import Styles from "./BooksCards.module.css";
 import currency from "../../assets/icons/currency-eur.png";
 import basket from "../../assets/icons/shopping-basket.png";
 import { BsCartPlus } from "react-icons/bs";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
 import { CartContext } from "../../App";
 import { NavLink } from "react-router-dom";
 
