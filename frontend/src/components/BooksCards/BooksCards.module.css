@@ -21,6 +21,8 @@
     width: 60%;
     float: left;
     padding-left: 10px;
+    color: black;
+    text-decoration: none;
 }
 
 
@@ -29,6 +31,16 @@
     text-align: left;
     font-weight: 700;
     font-size: 24px;
+}
+
+.link{
+    color: black;
+    
+}
+
+.link:hover{
+    color: #de5e35;
+    cursor: pointer;
 }
 
 .bookPrice {
@@ -47,13 +59,24 @@
     height: auto;
 }
 
-.bookPrice button {
+.bookPrice button{
+    width: 90px;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 2px;
+    background-color: #de5e35;
+    cursor: pointer;
+    color: white;
+}
+
+.bookPrice button:hover{
     width: 90px;
     border: 2px solid #de5e35;
     border-radius: 5px;
     padding: 2px;
     background-color: white;
     cursor: pointer;
+    color:#de5e35
 }
 
 .author a {

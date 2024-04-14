@@ -23,8 +23,8 @@ export default function BooksCards({
         </div>
         <div className={Styles.bookRightSide}>
           <div className={Styles.bookDescription}>
-            <NavLink to={`/livro/${bookid}`}>
-              <h2>{bookTitle}</h2>
+            <NavLink style={{ textDecoration: "none" }} to={`/livro/${bookid}`}>
+              <h2 className={Styles.link}>{bookTitle}</h2>
             </NavLink>
             <div className={Styles.author}>
               <a>{bookAuthor}</a>
@@ -40,7 +40,7 @@ export default function BooksCards({
                 : parseFloat(bookPrice).toFixed(2) + "€"}{" "}
             </h1>
             <button onClick={() => atualizarContext(book)}>
-              <BsCartPlus size={35} color="#de5e35" />
+              <BsCartPlus size={35} />
             </button>
           </div>
         </div>

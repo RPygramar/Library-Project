@@ -14,10 +14,17 @@ function App() {
   const [cart, setCart] = useState([]);
 
   function atualizarContext(book) {
-    setCart((prevCart) => {
-      return [...prevCart, book];
-    });
-    console.log(cart.length);
+    if (cart.find((item) => item.id === book.id)) {
+      cart.find((item) => item.id === book.id).quantity += 1;
+      console.log(cart.find((item) => item.id === book.id));
+    } else {
+      if (book.price) {
+        const newBook = { ...book, quantity: 1 };
+        setCart((prevCart) => {
+          return [...prevCart, newBook];
+        });
+      }
+    }
   }
 
   return (
