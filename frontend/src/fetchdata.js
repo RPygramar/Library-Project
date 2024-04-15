@@ -17,12 +17,7 @@ export function fetchAllBooks() {
 
 export async function fetchTenBooks(page) {
   try {
-    const response = await fetch(`http://localhost:3030/books?_page=${page}`);
-
-    if (!response.ok) {
-      throw new Error("Error loading data");
-    }
-
+    const response = await fetch(`http://localhost:3030/books?_page=${page}&limit=10`);
     return await response.json();
   } catch (error) {
     console.error("An error occurred: ", error);
@@ -30,30 +25,27 @@ export async function fetchTenBooks(page) {
   }
 }
 
-export async function retrieveBooksByAuthorOrCat(authors, category) {
+export async function retrieveBooksByAuthorOrCat(authors, category,target,order, page) {
   try {
+    let url = "http://localhost:3030/books?";
 
-    const response = await fetch(`http://localhost:3030/books?`);
-    const result = await response.json();
-    console.log("filtering")
-    if(category.length === 0 && authors.length > 0){
-    const filteredBooks = result.filter(book => {
-      return (authors.some(author => book.authors.includes(author)));}
-    );
-    return filteredBooks;
+      for (let i = 0; i < authors.length; i++) { // Change here: Start from 0
+        url += `&authors_like=${authors[i]}`;
+      }
+      for (let i = 0; i < category.length; i++) { // Change here: Start from 0
+        url += `&categories_like=${category[i]}`;
+      }
+
+      url += `&_page=${page}`
+
+    if (target !== "" && order !== "") {
+      url += `&_sort=${target}&_order=${order}`;
+
     }
-    if(authors.length === 0 && category.length > 0){
-      const filteredBooks = result.filter(book => {
-        return (category.some(cat => book.categories.includes(cat)));}
-      );
-      return filteredBooks;
-    }
-    if(authors.length > 0 && category.length > 0){
-      const filteredBooks = result.filter(book => {
-        return (authors.some(author => book.authors.includes(author)) && category.some(cat => book.categories.includes(cat)));}
-      );
-      return filteredBooks;
-    }
+    url += `&limit=10`;
+    const response = await fetch(url);
+    return response.json();
+
   } catch (error) {
     console.error("An error occurred: ", error);
     throw error; // re-throw the error to be handled by the caller

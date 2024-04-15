@@ -9,7 +9,7 @@ import React, { useState, useEffect } from "react";
 import Styles from "./BooksPage.module.css";
 import FilterBar from "../../components/FilterBar/FilterBar";
 import ReactPaginate from "react-paginate";
-import Footer from "../../components/Footer/Footer";
+
 
 export default function BooksPage() {
   const [books, setBooks] = useState([]);
@@ -21,11 +21,11 @@ export default function BooksPage() {
   const [selectedSort, setSelectedSort] = useState(null);
   const [isBeingSorted, setIsBeingSorted] = useState(false);
 
+  const [selectedAuthors, setSelectedAuthors] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const fetchData = async () => {
     try {
-      const fetchedBooks = await fetchTenBooks(currentPage);
-      setBooks(fetchedBooks.data);
-      setTotalPages(fetchedBooks.pages);
 
       const fetchAllBooksData = await fetchAllBooks();
 
@@ -47,77 +47,48 @@ export default function BooksPage() {
       console.error("Error fetching books:", error);
     }
   };
-  const filterBooks = async (
-    selectedAuthors,
-    selectedCategories,
-    selectedSort
-  ) => {
-    setSelectedSort(selectedSort);
-    console.log(
-      "Selected authors:",
-      selectedAuthors,
-      "Selected categories:",
-      selectedCategories,
-      "Selected sort:",
-      selectedSort
-    );
-    if (
-      (selectedAuthors.length !== 0 || selectedCategories.length !== 0) &&
-      (selectedSort === null || selectedSort === "Nenhum")
-    ) {
-      const filteredBooks = await retrieveBooksByAuthorOrCat(
-        selectedAuthors,
-        selectedCategories
-      );
-      console.log("Filtered books:", filteredBooks);
-      setBooks(filteredBooks);
-      setTotalPages(books.length / 10);
-    } else {
-      fetchData();
-    }
 
+
+  const filterBooks = async (selectedAuthors, selectedCategories, selectedSort) => {
+    fetchData();
+    console.log(selectedSort)
+    let order = null;
+    let target = null;
     switch (selectedSort) {
       case "Preço (mais baixo)":
-        setIsBeingSorted(true);
-        const sortedBooks = await sortBooksByPrice("price", "asc", currentPage);
-        setBooks(sortedBooks.data);
+        order = "ASC";
+        target = "price";
         break;
       case "Preço (mais alto)":
-        setIsBeingSorted(true);
-        const sortedBooksDesc = await sortBooksByPrice(
-          "price",
-          "desc",
-          currentPage
-        );
-        setBooks(sortedBooksDesc.data);
+        order = "DESC";
+        target = "price";
         break;
       case "Pontuação (mais alto)":
-        setIsBeingSorted(true);
-        const sortedBooksScore = await sortBooksByPrice(
-          "score",
-          "desc",
-          currentPage
-        );
-        setBooks(sortedBooksScore.data);
+        order = "DESC";
+        target = "score";
         break;
       case "Pontuação (mais baixa)":
-        setIsBeingSorted(true);
-        const sortedBooksScoreDesc = await sortBooksByPrice(
-          "score",
-          "asc",
-          currentPage
-        );
-        setBooks(sortedBooksScoreDesc.data);
+        order = "ASC";
+        target = "score";
         break;
     }
+
+
+    setSelectedSort(selectedSort);
+    setSelectedCategories(selectedCategories)
+    setSelectedAuthors(selectedAuthors)
+    const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthors, selectedCategories,target,order , currentPage);
+    setBooks(filteredBooks)
+
+
+
   };
 
   useEffect(() => {
-    if (isBeingSorted) {
-      filterBooks([], [], selectedSort);
-    } else {
-      fetchData().then((r) => console.log("Data fetched", books.data));
-    }
+
+      filterBooks(selectedAuthors, selectedCategories, selectedSort).then(r => console.log(r));
+
+
   }, [currentPage]); // Run fetchData whenever the currentPage changes
 
   const handlePageClick = (data) => {
@@ -158,7 +129,7 @@ export default function BooksPage() {
           previousLabel={"< Anterior"}
           nextLabel={"Próximo >"}
           breakLabel={"..."}
-          pageCount={totalPages}
+          pageCount={5}
           onPageChange={handlePageClick}
           containerClassName={Styles.pagination}
           pageLinkClassName={Styles.pageNum}
