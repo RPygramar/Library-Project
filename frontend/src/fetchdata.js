@@ -36,15 +36,20 @@ export async function retrieveBooksByAuthorOrCat(authors, category,target,order,
         url += `&categories_like=${category[i]}`;
       }
 
-      url += `&_page=${page}`
 
+
+      const allBooksResponse = await fetch(url);
+      const totalBooks = await allBooksResponse.json();
+      const totalPages = Math.ceil(totalBooks.length / 10);
+
+    url += `&_page=${page}`
     if (target !== "" && order !== "") {
       url += `&_sort=${target}&_order=${order}`;
 
     }
     url += `&limit=10`;
     const response = await fetch(url);
-    return response.json();
+    return [await response.json(), totalPages];
 
   } catch (error) {
     console.error("An error occurred: ", error);

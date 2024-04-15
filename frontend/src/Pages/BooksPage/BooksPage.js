@@ -2,8 +2,6 @@ import { retrieveBooksByAuthorOrCat } from "../../fetchdata";
 import BooksCards from "../../components/BooksCards/BooksCards";
 import {
   fetchAllBooks,
-  fetchTenBooks,
-  sortBooksByPrice,
 } from "../../fetchdata";
 import React, { useState, useEffect } from "react";
 import Styles from "./BooksPage.module.css";
@@ -19,7 +17,7 @@ export default function BooksPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(5);
   const [selectedSort, setSelectedSort] = useState(null);
-  const [isBeingSorted, setIsBeingSorted] = useState(false);
+
 
   const [selectedAuthors, setSelectedAuthors] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -78,7 +76,8 @@ export default function BooksPage() {
     setSelectedCategories(selectedCategories)
     setSelectedAuthors(selectedAuthors)
     const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthors, selectedCategories,target,order , currentPage);
-    setBooks(filteredBooks)
+    setBooks(filteredBooks[0]);
+    setTotalPages(filteredBooks[1]);
 
 
 
@@ -129,7 +128,7 @@ export default function BooksPage() {
           previousLabel={"< Anterior"}
           nextLabel={"Próximo >"}
           breakLabel={"..."}
-          pageCount={5}
+          pageCount={totalPages}
           onPageChange={handlePageClick}
           containerClassName={Styles.pagination}
           pageLinkClassName={Styles.pageNum}
