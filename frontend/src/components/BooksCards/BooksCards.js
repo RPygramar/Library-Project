@@ -5,6 +5,7 @@ import { BsCartPlus } from "react-icons/bs";
 import { useState, useContext } from "react";
 import { CartContext } from "../../App";
 import { NavLink } from "react-router-dom";
+import noImage from "../../assets/noImage.png";
 
 export default function BooksCards({
   book,
@@ -15,11 +16,27 @@ export default function BooksCards({
   bookPrice,
 }) {
   const { cart, setCart, atualizarContext } = useContext(CartContext);
+
+  function renderNoImage() {
+    return noImage;
+  }
   return (
     <>
       <div className={Styles.card}>
         <div className={Styles.bookLeftSide}>
-          <img src={bookURL} alt="Book Image not Found" />
+          {bookURL ? (
+            // If bookURL exists, display the book image
+            <img
+              src={bookURL}
+              onError={(event) => {
+                event.target.src = noImage;
+                event.onerror = null;
+              }}
+            />
+          ) : (
+            // If bookURL doesn't exist, display a greeting message
+            <img src={noImage} />
+          )}
         </div>
         <div className={Styles.bookRightSide}>
           <div className={Styles.bookDescription}>
