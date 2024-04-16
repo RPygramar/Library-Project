@@ -1,8 +1,11 @@
 import AsyncSelect from 'react-select/async';
 import Styles from './FilterBar.module.css';
 import Select from "react-select";
-import React, {useEffect, useState} from 'react';
-export default function FilterBar({ authors = [], categorys = [], filterBooks }) {
+import React, {useContext, useEffect, useState} from 'react';
+import {booksContext} from "../../Context/BooksContext";
+export default function FilterBar({ authors , categorys , filteredFunction }) {
+
+
     const formattedAuthors = authors ? authors.map((author) => ({ value: author, label: author })) : [];
     const formattedCategorys = categorys ? categorys.map((category) => ({ value: category, label: category })) : [];
 
@@ -12,7 +15,8 @@ export default function FilterBar({ authors = [], categorys = [], filterBooks })
 
 
     useEffect(() => {
-        filterBooks(selectedAuthors, selectedCategorys, selectedSort);
+
+        filteredFunction(selectedAuthors, selectedCategorys, selectedSort);
     }, [selectedAuthors, selectedCategorys, selectedSort]);
 
     const handleChange = (selectedOption, action) => {

@@ -58,6 +58,33 @@ export async function retrieveBooksByAuthorOrCat(authors, category,target,order,
 }
 
 
+export async function retrieveBooksByAuthorOrCatForSearch(option,input) {
+  try {
+    let url = "http://localhost:3030/books?";
+    if (option === "author") {
+      url += `&authors_like=${input}`;
+    } else {
+      url += `&categories_like=${input}`;
+    }
+
+    const response = await fetch(url);
+    return response.json();
+
+  } catch (error) {
+    console.error("An error occurred: ", error);
+    throw error; // re-throw the error to be handled by the caller
+  }
+}
+
+export async function randomSearch (value) {
+  try {
+    const response = await fetch(`http://localhost:3030/books?title_like=${value}`);
+    return await response.json();
+  } catch (error) {
+    console.error("An error occurred: ", error);
+    throw error; // re-throw the error to be handled by the caller
+  }
+}
 
 export async function sortBooksByPrice(value, order, page) {
   try {

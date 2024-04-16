@@ -8,6 +8,8 @@ import Cart_Page from "./Pages/Cart_Page/Cart_Page";
 import Footer from "./components/Footer/Footer";
 import { useState, createContext } from "react";
 
+import {BooksProvider} from "./Context/BooksContext";
+
 export const CartContext = createContext();
 
 function App() {
@@ -27,10 +29,12 @@ function App() {
     }
   }
 
+
   return (
     <>
       <CartContext.Provider value={{ cart, setCart, atualizarContext }}>
         <Router>
+          <BooksProvider>
           <Navbar />
           <Routes>
             <Route path="/" element={<Main_Page />} />
@@ -38,6 +42,7 @@ function App() {
             <Route path="/livros" element={<BooksPage />} />
             <Route path="/carrinho" element={<Cart_Page />} />
           </Routes>
+          </BooksProvider>
         </Router>
       </CartContext.Provider>
       <Footer />

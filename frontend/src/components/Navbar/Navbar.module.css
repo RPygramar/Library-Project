@@ -8,7 +8,7 @@
 
 .header{
     position: relative;
-    width: 100%;
+
     height: 8%;
     display: flex;
     justify-content: space-between;
@@ -42,30 +42,8 @@
     padding: 5px 10px;
 }
 
-.search_box {
-    background: #e0e0e0;
-    height: 40px;
+
+.inputWrapper {
     width: 30%;
-    padding: 10px 1%;
-    margin-right: 0;
-    border-radius: 20px;
-}
 
-.search_box input {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: #e0e0e0;
-}
-
-.cart_num{
-    position: absolute;
-    background-color: tomato;
-    border-radius: 100%;
-    width: 20px;
-    height: 20px;
-    text-align: center;
-    font-size: 12px;
-    padding-top: 3px;
-    color: black;
 }

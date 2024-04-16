@@ -3,14 +3,17 @@ import BooksCards from "../../components/BooksCards/BooksCards";
 import {
   fetchAllBooks,
 } from "../../fetchdata";
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect, useContext} from "react";
 import Styles from "./BooksPage.module.css";
 import FilterBar from "../../components/FilterBar/FilterBar";
 import ReactPaginate from "react-paginate";
+import {booksContext} from "../../Context/BooksContext";
 
 
 export default function BooksPage() {
-  const [books, setBooks] = useState([]);
+
+  const { books, filterBooks } = useContext(booksContext);
+
   const [authors, setAuthors] = useState([]);
   const [categorys, setCategorys] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
@@ -47,47 +50,19 @@ export default function BooksPage() {
   };
 
 
-  const filterBooks = async (selectedAuthors, selectedCategories, selectedSort) => {
-    fetchData();
-    console.log(selectedSort)
-    let order = null;
-    let target = null;
-    switch (selectedSort) {
-      case "Preço (mais baixo)":
-        order = "ASC";
-        target = "price";
-        break;
-      case "Preço (mais alto)":
-        order = "DESC";
-        target = "price";
-        break;
-      case "Pontuação (mais alto)":
-        order = "DESC";
-        target = "score";
-        break;
-      case "Pontuação (mais baixa)":
-        order = "ASC";
-        target = "score";
-        break;
-    }
+  const filteredFunction = (selectedAuthors, selectedCategories, querySort) => {
 
+    setSelectedSort(querySort);
+    setSelectedCategories(selectedCategories);
+    setSelectedAuthors(selectedAuthors);
 
-    setSelectedSort(selectedSort);
-    setSelectedCategories(selectedCategories)
-    setSelectedAuthors(selectedAuthors)
-    const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthors, selectedCategories,target,order , currentPage);
-    setBooks(filteredBooks[0]);
-    setTotalPages(filteredBooks[1]);
-
-
-
-  };
+    console.log(selectedAuthors, selectedCategories,selectedSort);
+    filterBooks(selectedAuthors, selectedCategories, selectedSort, currentPage);
+  }
 
   useEffect(() => {
-
-      filterBooks(selectedAuthors, selectedCategories, selectedSort).then(r => console.log(r));
-
-
+      fetchData()
+      filterBooks(selectedAuthors, selectedCategories, selectedSort, currentPage).then(r => console.log(r));
   }, [currentPage]); // Run fetchData whenever the currentPage changes
 
   const handlePageClick = (data) => {
@@ -102,7 +77,7 @@ export default function BooksPage() {
         <FilterBar
           authors={authors}
           categorys={categorys}
-          filterBooks={filterBooks}
+          filteredFunction={filteredFunction}
         />
       )}
       <ul className={Styles.booksContainer}>
