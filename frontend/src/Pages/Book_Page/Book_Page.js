@@ -1,4 +1,4 @@
-import { fetchAllBooks, fetchBookByID } from "../../fetchdata";
+import { fetchBookByID } from "../../fetchdata";
 import { useState, useEffect, useContext } from "react";
 import styles from "./Book_Page.module.css";
 import StarRate from "../../components/starRate/starRate";
@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 import { CartContext } from "../../App";
 
 export default function Book_Page() {
-  const { cart, setCart, atualizarContext } = useContext(CartContext);
+  const { cart, atualizarContext } = useContext(CartContext);
 
   const [book, setBook] = useState({});
 
