@@ -2,7 +2,7 @@ import AsyncSelect from 'react-select/async';
 import Styles from './FilterBar.module.css';
 import Select from "react-select";
 import React, {useContext, useEffect, useState} from 'react';
-import {booksContext} from "../../Context/BooksContext";
+
 export default function FilterBar({ authors , categorys , filteredFunction }) {
 
 
@@ -17,10 +17,15 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
 
 
     useEffect(() => {
-        filteredFunction(selectedAuthors, selectedCategorys, selectedSort);
-    }, [selectedAuthors, selectedCategorys, selectedSort]);
+            if (selectedAuthors.length > 0 || selectedCategorys.length > 0 || selectedSort) {
+                console.log("Selected filter");
+            filteredFunction(selectedAuthors, selectedCategorys, selectedSort);
+            }
+}, [selectedAuthors, selectedCategorys, selectedSort]);
+
 
     const handleChange = (selectedOption, action) => {
+        console.log(action.action)
         if(action.name ==='author'){
             setSelectedAuthors(selectedOption.map(option => option.value))
         }
@@ -30,6 +35,10 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
         if(action.name ==='sort'){
             setSelectedSort(selectedOption.value)
         }
+        if (action.action === 'clear'){
+            filteredFunction([], [],null)
+        }
+
 
     };
 

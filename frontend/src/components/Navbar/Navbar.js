@@ -5,12 +5,11 @@ import {NavLink, useLocation} from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CartContext } from "../../App";
 import { FaSearch } from "react-icons/fa";
-import {fetchAllBooks, randomSearch, retrieveBooksByAuthorOrCatForSearch} from "../../fetchdata";
+import {fetchAllBooks} from "../../fetchdata";
 import AsyncSelect from "react-select/async";
 import { components, DropdownIndicatorProps } from 'react-select';
-import BooksPage from "../../Pages/BooksPage/BooksPage";
-import {booksContext} from "../../Context/BooksContext";
 import { useNavigate } from 'react-router-dom';
+import {Menu, X} from "lucide-react";
 
 export default function Navbar() {
 
@@ -18,13 +17,16 @@ export default function Navbar() {
 
   const [allAuthorsCategories, setAllAuthorsCategories] = useState([]);
 
-  const { filterBooks , setBooks} = useContext(booksContext);
-
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
   const [titles, setTitles] = useState([]);
   const navigate = useNavigate();
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleNavBar = () => {
+    setIsOpen(!isOpen);
+  };
 
 
 
@@ -105,15 +107,22 @@ export default function Navbar() {
 
   return (
     <>
-      <header className={styles.header}>
-        <img className={styles.image} src={logo} ></img>
-        <div className={styles.inputWrapper}>
-
-          <AsyncSelect loadOptions={loadOptionsCategorys} defaultOptions isClearable
-                                         placeholder="Pesquisar..." name="author" defaultValue="Filtrar" onChange={handleChange} components={{ DropdownIndicator }} />
+      <nav className={styles.navbarcomp}>
+        <div className={styles.leftside}>
+          <img className={styles.image} src={logo}></img>
+          <AsyncSelect className={styles.select} loadOptions={loadOptionsCategorys} defaultOptions isClearable
+                       placeholder="Pesquisar..." name="author" defaultValue="Filtrar" onChange={handleChange}
+                       components={{DropdownIndicator}}/>
 
         </div>
-        <ul className={styles.ulclass}>
+        <div className={styles.menu} onClick={() => {setIsOpen(!isOpen)}}>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <ul className={isOpen ? styles.open : ""}>
+
           <li>
             <NavLink to="/">Home</NavLink>
           </li>
@@ -121,21 +130,60 @@ export default function Navbar() {
             <NavLink to="/livros">Livros</NavLink>
           </li>
           <li>
-            <NavLink to="#">Services</NavLink>
-          </li>
-          <li>
             <NavLink to="#">Contact</NavLink>
           </li>
+
           <li>
             <NavLink to="/carrinho">
-              <AiOutlineShoppingCart size={25} />
+              <AiOutlineShoppingCart size={25}/>
               <span className={styles.cart_num}>
                 {cart.length > 9 ? "9+" : cart.length}
               </span>
             </NavLink>
           </li>
+
         </ul>
-      </header>
+
+      </nav>
+
+
+      {/*<header className={styles.header}>*/}
+
+      {/*  <div className={styles.inputWrapper}>*/}
+      {/*    <img className={styles.image} src={logo}></img>*/}
+      {/*    <AsyncSelect className={styles.select} loadOptions={loadOptionsCategorys} defaultOptions isClearable*/}
+      {/*                 placeholder="Pesquisar..." name="author" defaultValue="Filtrar" onChange={handleChange}*/}
+      {/*                 components={{DropdownIndicator}}/>*/}
+
+      {/*  </div>*/}
+      {/*  <ul className={styles.ulclass}>*/}
+      {/*    <li>*/}
+      {/*      <NavLink to="/">Home</NavLink>*/}
+      {/*    </li>*/}
+      {/*    <li>*/}
+      {/*      <NavLink to="/livros">Livros</NavLink>*/}
+      {/*    </li>*/}
+      {/*    <li>*/}
+      {/*      <NavLink to="#">Services</NavLink>*/}
+      {/*    </li>*/}
+      {/*    <li>*/}
+      {/*      <NavLink to="#">Contact</NavLink>*/}
+      {/*    </li>*/}
+      {/*    <li>*/}
+      {/*      <NavLink to="/carrinho">*/}
+      {/*        <AiOutlineShoppingCart size={25}/>*/}
+      {/*        <span className={styles.cart_num}>*/}
+      {/*          {cart.length > 9 ? "9+" : cart.length}*/}
+      {/*        </span>*/}
+      {/*      </NavLink>*/}
+      {/*    </li>*/}
+      {/*    <div className={styles.menu}>*/}
+      {/*      <span></span>*/}
+      {/*      <span></span>*/}
+      {/*      <span></span>*/}
+      {/*    </div>*/}
+      {/*  </ul>*/}
+      {/*</header>*/}
     </>
-    );
+  );
 }

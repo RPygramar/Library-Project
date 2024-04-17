@@ -93,37 +93,34 @@ export default function BooksPage() {
     setSelectedCategories(selectedCategories);
     setSelectedAuthors(selectedAuthors);
 
-    filterBooks(selectedAuthors, selectedCategories, querySort, currentPage);
+    filterBooks(selectedAuthors, selectedCategories, querySort, currentPage).then(r => console.log("Filtered function runned"));
   }
 
   const searchByTitle = async (title) => {
-    const filteredBookss = await randomSearch(title);
-    console.log(filteredBookss);
-    setBooks(filteredBookss);
+    const filteredBooks = await randomSearch(title);
+    console.log(filteredBooks);
+    setBooks(filteredBooks);
   }
 
 
   useEffect(() => {
     console.log("Being called")
-
+    console.log(books)
       category = new URLSearchParams(location.search).get("categories");
       author = new URLSearchParams(location.search).get("authors");
       title = new URLSearchParams(location.search).get("title");
 
       fetchData()
-      if(authors !==null){
-        filterBooks([author], selectedCategories, selectedSort, currentPage)
-      }
-      if (category !==null){
-        filterBooks(selectedAuthors, [category], selectedSort, currentPage)
-      }
-      if (title !==null){
-        console.log("searching by title")
-        searchByTitle(title)
-      }
-      if(category ===null && author == null && title === null){
-        filterBooks(selectedAuthors, selectedCategories, selectedSort, currentPage)
-      }
+    if (author !== null) {
+      filterBooks([author], selectedCategories, selectedSort, currentPage);
+    } else if (category !== null) {
+      filterBooks(selectedAuthors, [category], selectedSort, currentPage);
+    } else if (title !== null) {
+      console.log(title);
+      searchByTitle(title);
+    } else {
+      filterBooks(selectedAuthors, selectedCategories, selectedSort, currentPage);
+    }
 
   }, [currentPage, author, category, title]); // Run fetchData whenever the currentPage changes
 

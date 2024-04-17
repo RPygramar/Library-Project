@@ -12,18 +12,7 @@ export function fetchAllBooks() {
 }
 
 
-// Anotar que isto ainda está hardcoded, esta a tirar 10 livros apenas porque sim.
-//Com o limit para 10 nao funciona
 
-export async function fetchTenBooks(page) {
-  try {
-    const response = await fetch(`http://localhost:3030/books?_page=${page}&limit=10`);
-    return await response.json();
-  } catch (error) {
-    console.error("An error occurred: ", error);
-    throw error; // re-throw the error to be handled by the caller
-  }
-}
 
 export async function retrieveBooksByAuthorOrCat(authors, category,target,order, page) {
   try {
@@ -35,8 +24,6 @@ export async function retrieveBooksByAuthorOrCat(authors, category,target,order,
       for (let i = 0; i < category.length; i++) { // Change here: Start from 0
         url += `&categories_like=${category[i]}`;
       }
-
-
 
       const allBooksResponse = await fetch(url);
       const totalBooks = await allBooksResponse.json();
@@ -58,48 +45,19 @@ export async function retrieveBooksByAuthorOrCat(authors, category,target,order,
 }
 
 
-export async function retrieveBooksByAuthorOrCatForSearch(option,input) {
-  try {
-    let url = "http://localhost:3030/books?";
-    if (option === "author") {
-      url += `&authors_like=${input}`;
-    } else {
-      url += `&categories_like=${input}`;
-    }
-
-    const response = await fetch(url);
-    return response.json();
-
-  } catch (error) {
-    console.error("An error occurred: ", error);
-    throw error; // re-throw the error to be handled by the caller
-  }
-}
 
 export async function randomSearch (value) {
   try {
     const response = await fetch(`http://localhost:3030/books?title_like=${value}`);
-    return await response.json();
+    return  await response.json();
+
   } catch (error) {
     console.error("An error occurred: ", error);
     throw error; // re-throw the error to be handled by the caller
   }
 }
 
-export async function sortBooksByPrice(value, order, page) {
-  try {
-    const orderVal = order === "asc" ? "" : "-";
-    const response = await fetch(`http://localhost:3030/books?_page=${page}&_sort=${orderVal}${value}`);
 
-    if (!response.ok) {
-      throw new Error("Error loading data");
-    }
-    return await response.json();
-  } catch (error) {
-    console.error("An error occurred: ", error);
-    throw error; // re-throw the error to be handled by the caller
-  }
-}
 
 export function fetchBookByID(id) {
   return fetch("http://localhost:3030/books/" + id)

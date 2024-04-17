@@ -6,43 +6,164 @@
     box-sizing: border-box;
 }
 
-.header{
-    position: relative;
-    height: 8%;
+.navbarcomp {
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 30px;
     background-color: #ffffff;
     box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbarcomp .leftside {
+    margin: 1rem;
+    display: flex;
+    align-items: center;
 }
 
 
-.header .image{
+
+.navbarcomp .leftside img {
     width: 130px;
     cursor: pointer;
 }
 
-.header .ulclass {
-    display: flex;
+.navbarcomp ul {
+    display:flex;
+    justify-content: space-between;
+}
+
+
+.navbarcomp ul li {
     list-style: none;
-    margin: 0;
 }
 
-.header .ulclass li {
-    margin:0px 2px;
-}
-
-.header .ulclass li a {
-    color: #000000;
+.navbarcomp ul li a {
+    display: block;
     text-decoration: none;
-    text-transform: capitalize;
-    letter-spacing: 1px;
-    padding: 5px 10px;
+    color: black;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+    border-radius: 0.5rem;
 }
 
 
-.inputWrapper {
-    width: 30%;
+
+.navbarcomp .menu {
+    display: none;
+    position: absolute;
+    top: 0.75rem;
+    right: 0.5rem;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 2.25rem;
+    height: 2rem;
+
 
 }
+
+
+
+.navbarcomp .menu span {
+    height: 0.4rem;
+    width: 100%;
+    background-color: black;
+    border-radius: 0.2rem;
+}
+
+@media (max-width: 650px) {
+    .navbarcomp .menu {
+        display: flex;
+    }
+
+    .navbarcomp  {
+        flex-direction: column;
+        align-items: start;
+    }
+
+    .navbarcomp ul {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+
+    .navbarcomp ul.open {
+        display: flex;
+    }
+
+    .navbarcomp ul li {
+        text-align: center;
+        width: 100%;
+    }
+}
+
+
+
+
+/*.header{*/
+/*    position: relative;*/
+/*    height: 8%;*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-items: center;*/
+/*    padding: 15px 30px;*/
+/*    background-color: #ffffff;*/
+/*    box-shadow: -10px 0 10px rgba(0, 0, 0, 0.1);*/
+/*}*/
+
+
+/*.header .image{*/
+/*    width: 130px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*.header .ulclass {*/
+/*    display: flex;*/
+/*    list-style: none;*/
+/*    margin: 0;*/
+/*}*/
+
+/*.header .ulclass li {*/
+/*    margin:0px 2px;*/
+/*}*/
+
+/*.header .ulclass li a {*/
+/*    color: #000000;*/
+/*    text-decoration: none;*/
+/*    text-transform: capitalize;*/
+/*    letter-spacing: 1px;*/
+/*    padding: 5px 10px;*/
+/*}*/
+
+
+/*.inputWrapper {*/
+/*    display: flex;*/
+/*    align-items: center;*/
+/*}*/
+
+/*.select {*/
+/*    width: 400px; !* Adjust the width as needed *!*/
+/*}*/
+
+/*.header .menu {*/
+/*    display: flex;*/
+/*    position: absolute;*/
+/*    top: 0.75rem;*/
+/*    right: 0.5rem;*/
+/*    flex-direction: column;*/
+/*    justify-content: space-between;*/
+/*    width: 2.25rem;*/
+/*    height: 2rem;*/
+
+/*}*/
+
+/*.header .menu span {*/
+/*    height: 0.4rem;*/
+/*    width: 100%;*/
+/*    background-color: black;*/
+/*    border-radius: 0.2rem;*/
+/*}*/
