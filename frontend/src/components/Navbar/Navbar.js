@@ -1,7 +1,7 @@
 import styles from "./Navbar.module.css";
 import logo from "../../assets/colares_sintra_logo.png";
 import React, { useState, useContext, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import {NavLink, useLocation} from "react-router-dom";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { CartContext } from "../../App";
 import { FaSearch } from "react-icons/fa";
@@ -24,6 +24,9 @@ export default function Navbar() {
   const [authors, setAuthors] = useState([]);
   const [titles, setTitles] = useState([]);
   const navigate = useNavigate();
+
+
+
 
   const fetchData = async () => {
     try {
@@ -70,16 +73,8 @@ export default function Navbar() {
             callback(filteredOptions);
         }
         );
-
-
   };
 
-  const fetchBooksByTitle = async (title) => {
-     const newBooks = await randomSearch(title)
-    console.log(newBooks)
-    setBooks(newBooks);
-
-  };
 
   const DropdownIndicator = (
   props: DropdownIndicatorProps< true>
@@ -91,21 +86,19 @@ export default function Navbar() {
   );
 };
   const handleChange = async (selectedOption) => {
+    if(selectedOption === null){
+      navigate(`/livros`);
+      return;
+    }
     if (selectedOption.type === 'Author') {
-      filterBooks([selectedOption.value], [],null);
+      navigate(`/livros?authors=${selectedOption.value}`);
     }
-    else if (selectedOption.type === 'Category') {
-      filterBooks([], [selectedOption.value],null);
+    if (selectedOption.type === 'Category') {
+      navigate(`/livros?categories=${selectedOption.value}`);
     }
-
-    else if (selectedOption.type === 'Title') {
-      await fetchBooksByTitle(selectedOption.value);
+    if (selectedOption.type === 'Title') {
+      navigate(`/livros?title=${selectedOption.value}`);
     }
-
-    navigate('/livros');
-
-
-
 
   };
 
@@ -116,9 +109,9 @@ export default function Navbar() {
         <img className={styles.image} src={logo} ></img>
         <div className={styles.inputWrapper}>
 
-          <AsyncSelect loadOptions={loadOptionsCategorys} defaultOptions
-                                         placeholder="Pesquisar..." isOptionSelected={<NavLink to="/Livros"/>} name="author" defaultValue="Filtrar" onChange={handleChange} components={{ DropdownIndicator }}/>
-          
+          <AsyncSelect loadOptions={loadOptionsCategorys} defaultOptions isClearable
+                                         placeholder="Pesquisar..." name="author" defaultValue="Filtrar" onChange={handleChange} components={{ DropdownIndicator }} />
+
         </div>
         <ul className={styles.ulclass}>
           <li>

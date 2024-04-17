@@ -5,22 +5,21 @@ export const booksContext = createContext();
 
 export const BooksProvider = ({children}) => {
     const [books, setBooks] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalPages, setTotalPages] = useState(5);
-
     const [selectedSort, setSelectedSort] = useState(null);
     const [selectedAuthors, setSelectedAuthors] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
 
-    const setStates = (selectedAuthorss, selectedCategoriess, selectedSortt) => {
-        setSelectedAuthors(selectedAuthorss);
-        setSelectedCategories(selectedCategoriess);
-        setSelectedSort(selectedSortt);
-    }
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(5);
 
-    const filterBooks = async (selectedAuthors, selectedCategories, selectedSort, currentPage) => {
+
+
+
+
+    const filterBooks = async (selectedAuthorss, selectedCategoriess, selectedSort, currentPage) => {
         let order = null;
         let target = null;
+
         switch (selectedSort) {
           case "Preço (mais baixo)":
             order = "ASC";
@@ -39,16 +38,21 @@ export const BooksProvider = ({children}) => {
             target = "score";
             break;
         }
+
+        const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthorss, selectedCategoriess,target,order , currentPage);
+        setBooks(filteredBooks[0]);
+
+        setSelectedAuthors(selectedAuthorss);
+        setSelectedCategories(selectedCategoriess);
+
         console.log(selectedCategories, selectedAuthors)
 
-        const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthors, selectedCategories,target,order , currentPage);
-        setBooks(filteredBooks[0]);
         setTotalPages(filteredBooks[1]);
-
+        console.log(filteredBooks[1])
   };
 
     return (
-        <booksContext.Provider value={{books, filterBooks, setBooks, selectedAuthors, setSelectedAuthors, selectedCategories, setSelectedCategories, selectedSort, setSelectedSort, setStates}}>
+        <booksContext.Provider value={{books, filterBooks, setBooks, selectedAuthors, setSelectedAuthors, selectedCategories, setSelectedCategories, selectedSort, setSelectedSort}}>
             {children}
         </booksContext.Provider>
     )

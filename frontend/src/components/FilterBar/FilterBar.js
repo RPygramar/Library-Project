@@ -14,6 +14,8 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
     const [selectedSort, setSelectedSort] = useState(null);
 
 
+
+
     useEffect(() => {
         filteredFunction(selectedAuthors, selectedCategorys, selectedSort);
     }, [selectedAuthors, selectedCategorys, selectedSort]);
@@ -34,13 +36,13 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
 
     const loadOptionsAuthors = (searchValue, callback) => {
 
-    setTimeout(() => {
-        const filteredOptions = formattedAuthors.filter((option) =>
-            option.label.toLowerCase().includes(searchValue.toLowerCase())
-        );
-        callback(filteredOptions);
-    }, 1000);
-};
+        setTimeout(() => {
+            const filteredOptions = formattedAuthors.filter((option) =>
+                option.label.toLowerCase().includes(searchValue.toLowerCase())
+            );
+            callback(filteredOptions);
+        }, 1000);
+    };
 
     const loadOptionsCategorys = (searchValue, callback) => {
 
