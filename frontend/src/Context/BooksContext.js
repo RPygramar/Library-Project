@@ -7,13 +7,18 @@ export const BooksProvider = ({children}) => {
     const [books, setBooks] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(5);
-    const [selectedSort, setSelectedSort] = useState(null);
 
+    const [selectedSort, setSelectedSort] = useState(null);
     const [selectedAuthors, setSelectedAuthors] = useState([]);
     const [selectedCategories, setSelectedCategories] = useState([]);
 
+    const setStates = (selectedAuthorss, selectedCategoriess, selectedSortt) => {
+        setSelectedAuthors(selectedAuthorss);
+        setSelectedCategories(selectedCategoriess);
+        setSelectedSort(selectedSortt);
+    }
+
     const filterBooks = async (selectedAuthors, selectedCategories, selectedSort, currentPage) => {
-        console.log(selectedAuthors, selectedCategories, selectedSort, currentPage)
         let order = null;
         let target = null;
         switch (selectedSort) {
@@ -34,18 +39,16 @@ export const BooksProvider = ({children}) => {
             target = "score";
             break;
         }
-        setSelectedSort(selectedSort);
-        setSelectedCategories(selectedCategories)
-        setSelectedAuthors(selectedAuthors)
+        console.log(selectedCategories, selectedAuthors)
+
         const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthors, selectedCategories,target,order , currentPage);
         setBooks(filteredBooks[0]);
-
         setTotalPages(filteredBooks[1]);
 
   };
 
     return (
-        <booksContext.Provider value={{books, filterBooks, setBooks}}>
+        <booksContext.Provider value={{books, filterBooks, setBooks, selectedAuthors, setSelectedAuthors, selectedCategories, setSelectedCategories, selectedSort, setSelectedSort, setStates}}>
             {children}
         </booksContext.Provider>
     )

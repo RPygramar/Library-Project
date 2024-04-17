@@ -1,4 +1,3 @@
-import { retrieveBooksByAuthorOrCat } from "../../fetchdata";
 import BooksCards from "../../components/BooksCards/BooksCards";
 import {
   fetchAllBooks,
@@ -12,18 +11,18 @@ import {booksContext} from "../../Context/BooksContext";
 
 export default function BooksPage() {
 
-  const { books, filterBooks } = useContext(booksContext);
+  const { books, filterBooks, selectedAuthors, setSelectedAuthors, selectedCategories, setSelectedCategories, selectedSort, setSelectedSort } = useContext(booksContext);
 
   const [authors, setAuthors] = useState([]);
   const [categorys, setCategorys] = useState([]);
   const [isDataLoaded, setIsDataLoaded] = useState(false);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(5);
-  const [selectedSort, setSelectedSort] = useState(null);
 
 
-  const [selectedAuthors, setSelectedAuthors] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+
+
 
   const fetchData = async () => {
     try {
@@ -56,13 +55,13 @@ export default function BooksPage() {
     setSelectedCategories(selectedCategories);
     setSelectedAuthors(selectedAuthors);
 
-    console.log(selectedAuthors, selectedCategories,selectedSort);
-    filterBooks(selectedAuthors, selectedCategories, selectedSort, currentPage);
+    filterBooks(selectedAuthors, selectedCategories, querySort, currentPage);
   }
 
   useEffect(() => {
       fetchData()
-      filterBooks(selectedAuthors, selectedCategories, selectedSort, currentPage).then(r => console.log(r));
+      filterBooks(selectedAuthors, selectedCategories, selectedSort, currentPage);
+
   }, [currentPage]); // Run fetchData whenever the currentPage changes
 
   const handlePageClick = (data) => {

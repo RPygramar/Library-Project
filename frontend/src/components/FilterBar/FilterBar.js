@@ -15,7 +15,6 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
 
 
     useEffect(() => {
-
         filteredFunction(selectedAuthors, selectedCategorys, selectedSort);
     }, [selectedAuthors, selectedCategorys, selectedSort]);
 
@@ -34,7 +33,7 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
 
 
     const loadOptionsAuthors = (searchValue, callback) => {
-    console.log("loadOptionsAuthors called");
+
     setTimeout(() => {
         const filteredOptions = formattedAuthors.filter((option) =>
             option.label.toLowerCase().includes(searchValue.toLowerCase())
@@ -44,7 +43,7 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
 };
 
     const loadOptionsCategorys = (searchValue, callback) => {
-    console.log("loadOptionsCategorys called");
+
     setTimeout(() => {
         const filteredOptions = formattedCategorys.filter((option) =>
             option.label.toLowerCase().includes(searchValue.toLowerCase())

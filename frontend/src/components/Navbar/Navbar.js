@@ -18,7 +18,7 @@ export default function Navbar() {
 
   const [allAuthorsCategories, setAllAuthorsCategories] = useState([]);
 
-  const { books, filterBooks , setBooks } = useContext(booksContext);
+  const { filterBooks , setBooks} = useContext(booksContext);
 
   const [categories, setCategories] = useState([]);
   const [authors, setAuthors] = useState([]);
@@ -28,7 +28,6 @@ export default function Navbar() {
   const fetchData = async () => {
     try {
       const fetchAllBooksData = await fetchAllBooks();
-      console.log(fetchAllBooksData);
 
       const extractedAuthors = fetchAllBooksData.flatMap((book) =>
         book.authors ? book.authors.map(author => ({ value: author, type: 'Author' })) : []
@@ -92,22 +91,19 @@ export default function Navbar() {
   );
 };
   const handleChange = async (selectedOption) => {
-    if (window.location.pathname !== '/Livros') {
-        navigate('/Livros');
-      }
-
     if (selectedOption.type === 'Author') {
-      console.log(selectedOption.type);
       filterBooks([selectedOption.value], [],null);
     }
     else if (selectedOption.type === 'Category') {
-            console.log(selectedOption.type);
-            filterBooks([], [selectedOption.value],null);
+      filterBooks([], [selectedOption.value],null);
     }
 
     else if (selectedOption.type === 'Title') {
       await fetchBooksByTitle(selectedOption.value);
     }
+
+    navigate('/livros');
+
 
 
 
