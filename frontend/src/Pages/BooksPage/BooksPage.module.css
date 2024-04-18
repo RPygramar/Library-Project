@@ -48,11 +48,11 @@
 }
 
 .pagination .pageNum:hover {
-    background-color: #5AB1BB;
+    background-color: #de5e35;
     color: white;
 }
 
 .pagination .active {
-    background-color: #5AB1BB;
+    background-color: #de5e35;
     color: white;
 }

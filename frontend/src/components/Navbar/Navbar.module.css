@@ -22,8 +22,8 @@
     margin: 1rem;
     display: flex;
     align-items: center;
+    width: 95%;
 }
-
 
 
 .navbarcomp .leftside img {
@@ -41,8 +41,23 @@
     list-style: none;
 }
 
+.bookcart {
+    display: flex;
+    justify-content: center;
+
+}
+
+.bookcart span {
+    background: #ef693f;
+    border-radius: 30px;
+    width: 20px;
+    height: 20px;
+    padding-left: 2px;
+    color: black;
+}
+
 .navbarcomp ul li a {
-    display: block;
+    display: flex;
     text-decoration: none;
     color: black;
     padding: 0.5rem;
@@ -78,6 +93,12 @@
     .navbarcomp .menu {
         display: flex;
     }
+    .navbarcomp .leftside {
+        flex-direction: column;
+    }
+    .navbarcomp .leftside .select {
+        width: 100%;
+    }
 
     .navbarcomp  {
         flex-direction: column;
@@ -89,6 +110,10 @@
         flex-direction: column;
         width: 100%;
         margin-bottom: 0.25rem;
+    }
+    .navbarcomp ul li a {
+        width: 100%;
+        justify-content: center;
     }
 
     .navbarcomp ul.open {

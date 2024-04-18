@@ -9,7 +9,8 @@ import {fetchAllBooks} from "../../fetchdata";
 import AsyncSelect from "react-select/async";
 import { components, DropdownIndicatorProps } from 'react-select';
 import { useNavigate } from 'react-router-dom';
-import {Menu, X} from "lucide-react";
+
+
 
 export default function Navbar() {
 
@@ -133,7 +134,7 @@ export default function Navbar() {
             <NavLink to="#">Contact</NavLink>
           </li>
 
-          <li>
+          <li className={styles.bookcart}>
             <NavLink to="/carrinho">
               <AiOutlineShoppingCart size={25}/>
               <span className={styles.cart_num}>
