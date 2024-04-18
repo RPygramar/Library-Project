@@ -24,13 +24,6 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const toggleNavBar = () => {
-    setIsOpen(!isOpen);
-  };
-
-
-
   const fetchData = async () => {
     try {
       const fetchAllBooksData = await fetchAllBooks();
@@ -67,7 +60,7 @@ export default function Navbar() {
    }
   }
 
-  const loadOptionsCategorys = async (searchValue, callback) => {
+  const loadAllOptions = async (searchValue, callback) => {
     await fetchData().then(
         () => {
             const filteredOptions = allAuthorsCategories.filter((option) =>
@@ -102,7 +95,6 @@ export default function Navbar() {
     if (selectedOption.type === 'Title') {
       navigate(`/livros?title=${selectedOption.value}`);
     }
-
   };
 
 
@@ -111,7 +103,7 @@ export default function Navbar() {
       <nav className={styles.navbarcomp}>
         <div className={styles.leftside}>
           <img className={styles.image} src={logo}></img>
-          <AsyncSelect className={styles.select} loadOptions={loadOptionsCategorys} defaultOptions isClearable
+          <AsyncSelect className={styles.select} loadOptions={loadAllOptions} defaultOptions isClearable
                        placeholder="Pesquisar..." name="author" defaultValue="Filtrar" onChange={handleChange}
                        components={{DropdownIndicator}}/>
 

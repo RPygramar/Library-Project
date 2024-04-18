@@ -86,13 +86,11 @@ export default function BooksPage() {
     }
   };
 
-
+//Otimizar isto posso chamar somente a filterbooks (?) e passar os parametros
   const filteredFunction = (selectedAuthors, selectedCategories, querySort) => {
-
     setSelectedSort(querySort);
     setSelectedCategories(selectedCategories);
     setSelectedAuthors(selectedAuthors);
-
     filterBooks(selectedAuthors, selectedCategories, querySort, currentPage).then(r => console.log("Filtered function runned"));
   }
 

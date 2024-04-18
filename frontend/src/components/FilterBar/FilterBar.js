@@ -13,6 +13,13 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
     const [selectedCategorys, setSelectedCategorys] = useState([]);
     const [selectedSort, setSelectedSort] = useState(null);
 
+    const sortOptions = [
+        {value:"Preço (mais baixo)", label: "Preço (mais baixo)"},
+        {value:"Preço (mais alto)", label: "Preço (mais alto)"},
+        {value:"Pontuação (mais alto)", label: "Pontuação (mais alto)"},
+        {value:"Pontuação (mais baixa)", label: "Pontuação (mais baixa)"},
+        {value: "Nenhum", label: "Nenhum"}
+    ]
 
 
 
@@ -53,7 +60,7 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
         }, 1000);
     };
 
-    const loadOptionsCategorys = (searchValue, callback) => {
+    const loadOptionsCategories = (searchValue, callback) => {
 
     setTimeout(() => {
         const filteredOptions = formattedCategorys.filter((option) =>
@@ -62,13 +69,7 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
         callback(filteredOptions);
     }, 1000);
 };
-    const sortOptions = [
-        {value:"Preço (mais baixo)", label: "Preço (mais baixo)"},
-        {value:"Preço (mais alto)", label: "Preço (mais alto)"},
-        {value:"Pontuação (mais alto)", label: "Pontuação (mais alto)"},
-        {value:"Pontuação (mais baixa)", label: "Pontuação (mais baixa)"},
-        {value: "Nenhum", label: "Nenhum"}
-    ]
+
 
     return (
         <>
@@ -80,7 +81,7 @@ export default function FilterBar({ authors , categorys , filteredFunction }) {
                         <li><AsyncSelect loadOptions={loadOptionsAuthors} defaultOptions onChange={handleChange}
                                          isMulti placeholder="Filtrar por autor" name="author" defaultValue="Filtrar"/>
                         </li>
-                        <li><AsyncSelect loadOptions={loadOptionsCategorys} defaultOptions onChange={handleChange}
+                        <li><AsyncSelect loadOptions={loadOptionsCategories} defaultOptions onChange={handleChange}
                                          isMulti placeholder="Filtrar por categoria" name="category" />
                         </li>
                     </div>
