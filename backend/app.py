@@ -24,20 +24,24 @@ def parse_json(data):
 
 
 
-@app.route('/user/login/', methods=['POST'])
+@app.route('/user/login', methods=['POST'])
 def login():
-    dados = request.json
     # Fazer Login do user
-
+    user = request.args.get('user')
+    password = request.args.get('password')
     # Check se user é válido e se tem o campo confirmation = True
+    print(user, password)
+    confirmation = db.users.find_one({"username": user, "password": password})
+    print(confirmation)
+    if confirmation:
+        token = jwt.encode({
+            'username': user,
+            'exp': datetime.utcnow() + timedelta(minutes=1)
+        }, app.config['SECRET_KEY'], algorithm="HS256")
 
-    # Apenas gerir Authentication Token se confirmation = True
-    token = jwt.encode({
-        'username': dados['username'],
-        'exp': datetime.utcnow() + timedelta(minutes=1)
-    }, app.config['SECRET_KEY'], algorithm="HS256")
-
-    return jsonify({'token': token}), 200
+        return jsonify({'token': token}), 200
+    else:
+        return jsonify({'message': 'Invalid credentials'}), 401
 
 
 def token_required(func):
@@ -69,13 +73,21 @@ def get_book(id):
     book = db.books.find_one({"_id": ObjectId(id)})
     return parse_json(book)
 
+#Esta com um erro
+# @app.route("/books", methods=["POST"])
+# @token_required
+# def create_book():
+#      data = request.json
+#      print(data[0])
+#      if len(data) == 1:
+#         db.books.insert_one(data)
+#         return jsonify({"message": "Book created"})
+#      elif len(data) > 1:
+#         db.books.insert_many(data[0])
+#         return jsonify({"message": "Books created"})
+#      return jsonify({"message": "No data provided"})
 
-@app.route("/books", methods=["POST"])
-@token_required
-def create_book():
-     data = request.json
-     db.books.insert_one(data)
-     return jsonify({"message": "Book created"})
+
 
 
 @app.route("/books/features", methods=["GET"])
@@ -135,3 +147,5 @@ def get_books_by_price():
     books = list(db.books.find().sort({"price":{"$gt": mininum_price, "$lte": maximum_price}}).sort("price", -1).skip(skip_value).limit(limit))
 
     return parse_json(books)
+
+
