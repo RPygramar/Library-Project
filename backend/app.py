@@ -36,7 +36,7 @@ def login():
     if confirmation:
         token = jwt.encode({
             'username': user,
-            'exp': datetime.utcnow() + timedelta(minutes=1)
+            'exp': datetime.utcnow() + timedelta(minutes=5)
         }, app.config['SECRET_KEY'], algorithm="HS256")
 
         return jsonify({'token': token}), 200
@@ -74,19 +74,79 @@ def get_book(id):
     return parse_json(book)
 
 #Esta com um erro
-# @app.route("/books", methods=["POST"])
-# @token_required
-# def create_book():
-#      data = request.json
-#      print(data[0])
-#      if len(data) == 1:
-#         db.books.insert_one(data)
-#         return jsonify({"message": "Book created"})
-#      elif len(data) > 1:
-#         db.books.insert_many(data[0])
-#         return jsonify({"message": "Books created"})
-#      return jsonify({"message": "No data provided"})
+@app.route("/books", methods=["POST"])
+@token_required
+def create_book():
+    data = request.json
+    if not data:
+        return jsonify({"message": "No data provided"}), 400
 
+    if len(data)>1:
+        for book in data:
+            db.books.insert_one(book)
+        return jsonify({"message": "Books created"})
+
+    db.books.insert_one(data[0])
+    return jsonify({"message": "Book created"})
+
+
+# Esta com um erro em que podes dar update a valores que nao existem
+@app.route("/books/<id>", methods=["PUT"])
+@token_required
+def update_book(id):
+    data = request.json
+    if not data:
+        return jsonify({"message": "No data provided"}), 400
+    try:
+        object_id = ObjectId(id)
+    except Exception as e:
+        return jsonify({"message": "Invalid book ID format"}), 400
+
+    update_result = db.books.update_one({"_id": object_id}, {"$set": data[0]})
+
+    if update_result.matched_count == 0:
+        return jsonify({"message": "Book not found"}), 404
+
+    return jsonify({"message": "Book updated"}), 200
+
+
+@app.route("/user/confirmation", methods=["POST"])
+@token_required
+def confirm_user():
+    user = request.args.get('user')
+    if not user:
+        return jsonify({"message": "Specify the user"}), 400
+
+    existing_user = db.users.find_one({"username": user})
+    if existing_user is not None:
+        db.users.update_one({"username": user},{"$set": {"confirmed": True}})
+        return jsonify({"message": "User confirmed"})
+
+    return jsonify({"message": "User doesnt exist"}), 400
+
+
+
+@app.route("/user/signup", methods=["POST"])
+def signup():
+    user = request.args.get('user')
+    password = request.args.get('password')
+    confirmed = False
+    if not user or not password:
+        return jsonify({"message": "User and Password are required"}), 400
+
+    existing_user = db.users.find({"username": user})
+    if existing_user is None:
+        db.users.insert_one({"username": user, "password": password, "confirmed": confirmed})
+        return jsonify({"message": "User created"})
+    return jsonify({"message": "User already exists"}), 400
+
+
+
+@app.route("/books/<id>", methods=["DELETE"])
+@token_required
+def delete_book(id):
+    db.books.delete_one({"_id": ObjectId(id)})
+    return jsonify({"message": "Book deleted"})
 
 
 
