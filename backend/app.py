@@ -26,13 +26,10 @@ def parse_json(data):
 
 @app.route('/user/login', methods=['POST'])
 def login():
-    # Fazer Login do user
     user = request.args.get('user')
     password = request.args.get('password')
-    # Check se user é válido e se tem o campo confirmation = True
-    print(user, password)
     confirmation = db.users.find_one({"username": user, "password": password})
-    print(confirmation)
+
     if confirmation:
         token = jwt.encode({
             'username': user,
@@ -209,3 +206,14 @@ def get_books_by_price():
     return parse_json(books)
 
 
+@app.route("/books/cart", methods=["POST"])
+def cart():
+    data = request.json
+    if not data:
+        return jsonify({"message": "No data provided"}), 400
+    price = 0
+    for book in data:
+        price += book["price"]
+    cart = {"cart": [data], "price":price}
+    db.cart.insert_one(cart)
+    return jsonify({"message": "Book added to cart"})
