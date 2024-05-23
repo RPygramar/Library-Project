@@ -157,7 +157,6 @@ def get_total_books():
     total = db.books.count_documents({})
     return jsonify({"total": total})
 
-
 @app.route("/books/autor/<autor>", methods=["GET"])
 def get_books_by_autor(autor):
     page = int(request.args.get("page", 1))
