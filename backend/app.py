@@ -28,8 +28,9 @@ def parse_json(data):
 def login():
     user = request.args.get('user')
     password = request.args.get('password')
-    confirmation = db.users.find_one({"username": user, "password": password})
-
+    confirmation = db.users.find_one({"username": user, "password": password, "confirmed": True})
+    if user is None or password is None:
+        return jsonify({'message': 'User or password are missing'}), 401
     if confirmation:
         token = jwt.encode({
             'username': user,
