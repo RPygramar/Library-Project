@@ -68,7 +68,9 @@ def get_books():
 @app.route("/books/<id>", methods=["GET"])
 def get_book(id):
     book = db.books.find_one({"_id": ObjectId(id)})
-    return parse_json(book)
+    if book is None:
+        return jsonify({"message": "Book not found"}), 404
+    return parse_json(book), 200
 
 #Esta com um erro
 @app.route("/books", methods=["POST"])
@@ -98,12 +100,9 @@ def update_book(id):
         object_id = ObjectId(id)
     except Exception as e:
         return jsonify({"message": "Invalid book ID format"}), 400
-
     update_result = db.books.update_one({"_id": object_id}, {"$set": data[0]})
-
     if update_result.matched_count == 0:
         return jsonify({"message": "Book not found"}), 404
-
     return jsonify({"message": "Book updated"}), 200
 
 
@@ -115,26 +114,29 @@ def confirm_user():
         return jsonify({"message": "Specify the user"}), 400
 
     existing_user = db.users.find_one({"username": user})
-    if existing_user is not None:
+    print(existing_user)
+    if existing_user is not None and existing_user["confirmed"] != True:
         db.users.update_one({"username": user},{"$set": {"confirmed": True}})
-        return jsonify({"message": "User confirmed"})
-
+        return jsonify({"message": "User confirmed"}), 200
+    else:
+        return jsonify({"message": "User already has permissions"}), 400
     return jsonify({"message": "User doesnt exist"}), 400
 
 
 
 @app.route("/user/signup", methods=["POST"])
 def signup():
-    user = request.args.get('user')
+    user = request.args.get('username')
     password = request.args.get('password')
     confirmed = False
     if not user or not password:
-        return jsonify({"message": "User and Password are required"}), 400
+        return jsonify({"message": "Username and Password are required"}), 400
 
-    existing_user = db.users.find({"username": user})
+    existing_user = db.users.find_one({"username": user})
+
     if existing_user is None:
         db.users.insert_one({"username": user, "password": password, "confirmed": confirmed})
-        return jsonify({"message": "User created"})
+        return jsonify({"message": "User created"}), 200
     return jsonify({"message": "User already exists"}), 400
 
 
@@ -142,12 +144,15 @@ def signup():
 @app.route("/books/<id>", methods=["DELETE"])
 @token_required
 def delete_book(id):
+    book = db.books.find_one({"_id": ObjectId(id)})
+    if book is None:
+        return jsonify({"message": "Book not found"}), 404
     db.books.delete_one({"_id": ObjectId(id)})
     return jsonify({"message": "Book deleted"})
 
 
 
-@app.route("/books/features", methods=["GET"])
+@app.route("/books/featured", methods=["GET"])
 def get_featured():
     featured = db.books.find({"score": 5 }).sort("price", -1).limit(5)
     return parse_json(featured)
@@ -164,7 +169,8 @@ def get_books_by_autor(autor):
 
     skip_value = (page - 1) * limit
     books = list(db.books.find({"authors": autor}).skip(skip_value).limit(limit))
-
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return parse_json(books)
 
 
@@ -176,32 +182,35 @@ def get_books_by_ano(ano):
     limit = int(request.args.get("limit", 10))
 
     skip_value = (page - 1) * limit
-
-    books = db.books.find({"publishedDate": {"$gte": initial_data, "$lt": final_data}}).skip(skip_value).limit(limit)
-
+    books = db.books.find({"publishedDate": {"$gte": initial_data, "$lte": final_data}}).skip(skip_value).limit(limit)
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return parse_json(books)
 
 @app.route("/books/categorias/<categoria>", methods=["GET"])
-def get_categorias(categoria):
+def get_books_by_categories(categoria):
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 10))
 
     skip_value = (page - 1) * limit
     books = list(db.books.find({"categories": categoria}).skip(skip_value).limit(limit))
-
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return parse_json(books)
 
 @app.route("/books/price", methods=["GET"])
 def get_books_by_price():
     page = int(request.args.get("page", 1))
     limit = int(request.args.get("limit", 10))
+    order = request.args.get("order", 1)
 
     mininum_price = float(request.args.get("min", 0))
     maximum_price = float(request.args.get("max", 200))
 
     skip_value = (page - 1) * limit
-    books = list(db.books.find().sort({"price":{"$gt": mininum_price, "$lte": maximum_price}}).sort("price", -1).skip(skip_value).limit(limit))
-
+    books = list(db.books.find({"price":{"$gt": mininum_price, "$lte": maximum_price}}).sort("price", int(order)).skip(skip_value).limit(limit))
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return parse_json(books)
 
 
@@ -215,4 +224,4 @@ def cart():
         price += book["price"]
     cart = {"cart": [data], "price":price}
     db.cart.insert_one(cart)
-    return jsonify({"message": "Book added to cart"})
+    return jsonify({"message": "Books added to cart"})
