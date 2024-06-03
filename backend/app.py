@@ -24,13 +24,73 @@ def parse_json(data):
 
 
 
+@app.route('/books/target/<target>/order/<order>/page/<page>', methods=['GET'])
+def get_books_sorted(target, order, page):
+    books = list(db.books.find().sort(target, int(order)).skip((int(page) -1 )* 10).limit(10))
+    total = db.books.count_documents({})  # Correctly get the total count of documents
+
+    return jsonify({"books": parse_json(books), "total": total})
+
+@app.route('/books/page/<page>', methods=['GET'])
+def get_books_page(page):
+    books = list(db.books.find().skip((int(page) -1 )* 10).limit(10))
+    total = db.books.count_documents({})
+    return jsonify({"books": parse_json(books), "total": total})
+
+@app.route('/books/category/<category>/page/<page>', methods=['GET'])
+def get_books_by_category(category, page):
+    books = list(db.books.find({"categories": category}).skip((int(page) -1 )* 10).limit(10))
+    total = db.books.count_documents( {"categories": category})
+
+    return jsonify({"books": parse_json(books), "total": total})
+
+@app.route('/books/author/<author>/page/<page>', methods=['GET'])
+def get_books_by_author(author, page):
+    books = list(db.books.find({"authors": author}).skip((int(page) -1 )* 10).limit(10))
+    total = db.books.count_documents({"authors": author})
+    return jsonify({"books": parse_json(books), "total": total})
+
+@app.route('/books/category/<category>/author/<author>/page/<page>', methods=['GET'])
+def get_books_by_category_and_author(category, author, page):
+    books = list(db.books.find({"categories": category, "authors": author}).skip((int(page) -1 )* 10).limit(10))
+    total = db.books.count_documents({"categories": category,
+                                      "authors": author})
+    return jsonify({"books": parse_json(books), "total": total})
+
+@app.route('/books/category/<category>/author/<author>/target/<target>/order/<order>/page/<page>', methods=['GET'])
+def get_books_by_category_and_author_order(category, author, target, order, page):
+    books = list(db.books.find({"categories": category, "authors": author}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
+    total = db.books.count_documents({"categories": category,
+                                      "authors": author})  # Correctly get the total count of documents matching both criteria
+
+    return jsonify({"books": parse_json(books), "total": total})
+
+@app.route('/books/category/<category>/target/<target>/order/<order>/page/<page>', methods=['GET'])
+def get_books_by_category_order(category, target, order, page):
+    books = list(db.books.find({"categories": category}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
+    total = db.books.count_documents({"categories": category})
+    return jsonify({"books": parse_json(books), "total": total})
+
+@app.route('/books/author/<author>/target/<target>/order/<order>/page/<page>', methods=['GET'])
+def get_books_by_author_order(author, target, order, page):
+    books = list(db.books.find({"authors": author}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
+    total = db.books.count_documents({"authors": author})
+    return jsonify({"books": parse_json(books), "total": total})
+
+@app.route("/books/title/<title>", methods=['GET'])
+def get_books_by_title(title):
+    books = list(db.books.find({"title": title}))
+    return parse_json(books), 200
+
 @app.route('/user/login', methods=['POST'])
 def login():
     user = request.args.get('user')
     password = request.args.get('password')
     confirmation = db.users.find_one({"username": user, "password": password, "confirmed": True})
+
     if user is None or password is None:
         return jsonify({'message': 'User or password are missing'}), 401
+
     if confirmation:
         token = jwt.encode({
             'username': user,
@@ -68,7 +128,7 @@ def get_books():
 
 @app.route("/books/<id>", methods=["GET"])
 def get_book(id):
-    book = db.books.find_one({"_id": ObjectId(id)})
+    book = db.books.find_one({"id": id})
     if book is None:
         return jsonify({"message": "Book not found"}), 404
     return parse_json(book), 200
@@ -90,7 +150,7 @@ def create_book():
     return jsonify({"message": "Book created"})
 
 
-# Esta com um erro em que podes dar update a valores que nao existem
+
 @app.route("/books/<id>", methods=["PUT"])
 @token_required
 def update_book(id):
@@ -119,8 +179,9 @@ def confirm_user():
     if existing_user is not None and existing_user["confirmed"] != True:
         db.users.update_one({"username": user},{"$set": {"confirmed": True}})
         return jsonify({"message": "User confirmed"}), 200
-    else:
+    elif existing_user is not None and existing_user["confirmed"] == True:
         return jsonify({"message": "User already has permissions"}), 400
+
     return jsonify({"message": "User doesnt exist"}), 400
 
 

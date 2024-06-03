@@ -39,25 +39,45 @@ export default function BooksPage() {
 
         switch (selectedSort) {
           case "Preço (mais baixo)":
-            order = "ASC";
+            order = 1;
             target = "price";
             break;
           case "Preço (mais alto)":
-            order = "DESC";
+            order = -1;
             target = "price";
             break;
           case "Pontuação (mais alto)":
-            order = "DESC";
+            order = -1;
             target = "score";
             break;
           case "Pontuação (mais baixa)":
-            order = "ASC";
+            order = 1;
             target = "score";
             break;
         }
 
+        // switch (selectedSort) {
+        //   case "Preço (mais baixo)":
+        //     order = "ASC";
+        //     target = "price";
+        //     break;
+        //   case "Preço (mais alto)":
+        //     order = "DESC";
+        //     target = "price";
+        //     break;
+        //   case "Pontuação (mais alto)":
+        //     order = "DESC";
+        //     target = "score";
+        //     break;
+        //   case "Pontuação (mais baixa)":
+        //     order = "ASC";
+        //     target = "score";
+        //     break;
+        // }
+
         const filteredBooks = await retrieveBooksByAuthorOrCat(selectedAuthorss, selectedCategoriess,target,order , currentPage);
         setBooks(filteredBooks[0]);
+
         setTotalPages(filteredBooks[1]);
 
   };
