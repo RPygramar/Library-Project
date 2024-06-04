@@ -27,27 +27,34 @@ def parse_json(data):
 @app.route('/books/target/<target>/order/<order>/page/<page>', methods=['GET'])
 def get_books_sorted(target, order, page):
     books = list(db.books.find().sort(target, int(order)).skip((int(page) -1 )* 10).limit(10))
-    total = db.books.count_documents({})  # Correctly get the total count of documents
+    total = db.books.count_documents({})
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
 
-    return jsonify({"books": parse_json(books), "total": total})
+    return jsonify({"books": parse_json(books), "total": total}), 200
 
 @app.route('/books/page/<page>', methods=['GET'])
 def get_books_page(page):
     books = list(db.books.find().skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents({})
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return jsonify({"books": parse_json(books), "total": total})
 
 @app.route('/books/category/<category>/page/<page>', methods=['GET'])
 def get_books_by_category(category, page):
     books = list(db.books.find({"categories": category}).skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents( {"categories": category})
-
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return jsonify({"books": parse_json(books), "total": total})
 
 @app.route('/books/author/<author>/page/<page>', methods=['GET'])
 def get_books_by_author(author, page):
     books = list(db.books.find({"authors": author}).skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents({"authors": author})
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return jsonify({"books": parse_json(books), "total": total})
 
 @app.route('/books/category/<category>/author/<author>/page/<page>', methods=['GET'])
@@ -55,6 +62,8 @@ def get_books_by_category_and_author(category, author, page):
     books = list(db.books.find({"categories": category, "authors": author}).skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents({"categories": category,
                                       "authors": author})
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return jsonify({"books": parse_json(books), "total": total})
 
 @app.route('/books/category/<category>/author/<author>/target/<target>/order/<order>/page/<page>', methods=['GET'])
@@ -62,6 +71,8 @@ def get_books_by_category_and_author_order(category, author, target, order, page
     books = list(db.books.find({"categories": category, "authors": author}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
     total = db.books.count_documents({"categories": category,
                                       "authors": author})  # Correctly get the total count of documents matching both criteria
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
 
     return jsonify({"books": parse_json(books), "total": total})
 
@@ -69,17 +80,24 @@ def get_books_by_category_and_author_order(category, author, target, order, page
 def get_books_by_category_order(category, target, order, page):
     books = list(db.books.find({"categories": category}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
     total = db.books.count_documents({"categories": category})
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return jsonify({"books": parse_json(books), "total": total})
+
 
 @app.route('/books/author/<author>/target/<target>/order/<order>/page/<page>', methods=['GET'])
 def get_books_by_author_order(author, target, order, page):
     books = list(db.books.find({"authors": author}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
     total = db.books.count_documents({"authors": author})
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return jsonify({"books": parse_json(books), "total": total})
 
 @app.route("/books/title/<title>", methods=['GET'])
 def get_books_by_title(title):
     books = list(db.books.find({"title": title}))
+    if len(books) == 0:
+        return jsonify({"message": "Books not found"}), 404
     return parse_json(books), 200
 
 @app.route('/user/login', methods=['POST'])
@@ -283,4 +301,4 @@ def cart_checkout():
         return jsonify({"message": "No data provided"}), 400
     cart = {"cart": data["cart"], "price":data["price"]}
     db.cart.insert_one(cart)
-    return jsonify({"message": "Books added to cart"})
+    return jsonify({"message": "The following books were added to the cart: ", "cart": data["cart"], "price": data["price"]})
