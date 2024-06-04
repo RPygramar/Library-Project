@@ -277,22 +277,10 @@ def get_books_by_price():
 
 
 @app.route("/books/cart", methods=["POST"])
-def cart():
+def cart_checkout():
     data = request.json
-    if not data:
+    if not data['cart']:
         return jsonify({"message": "No data provided"}), 400
-    price = 0
-    for book in data:
-        price += book["price"]
-    cart = {"cart": [data], "price":price}
-    db.cart.insert_one(cart)
-    return jsonify({"message": "Books added to cart"})
-
-
-@app.route("/books/cart/<cart>/<price>", methods=["POST"])
-def cart_checkout(cart, price):
-    if not cart:
-        return jsonify({"message": "No data provided"}), 400
-    cart = {"cart": [cart], "price":price}
+    cart = {"cart": data["cart"], "price":data["price"]}
     db.cart.insert_one(cart)
     return jsonify({"message": "Books added to cart"})

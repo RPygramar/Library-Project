@@ -4,7 +4,7 @@ import { BsCart } from "react-icons/bs";
 import { BsCartPlus } from "react-icons/bs";
 import { CartContext } from "../../App";
 import Product_Basket from "../../components/Product_Basket/Product_Basket";
-
+import {updateCart} from "../../fetchdata";
 export default function Book_Page() {
   const { cart, setCart } = useContext(CartContext);
   const [total, setTotal] = useState(0.0);
@@ -70,7 +70,7 @@ export default function Book_Page() {
               <p className={styles.total_label}>Total</p>
               <p className={styles.total_price}>€ {total.toFixed(2)}</p>
             </div>
-            <div className={styles.buy_button}>
+            <div className={styles.buy_button} onClick={()=> updateCart(cart, total)}>
               <BsCartPlus className={styles.cart_plus} />
               <p className={styles.buy_label}>COMPRAR</p>
             </div>
