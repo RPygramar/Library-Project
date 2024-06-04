@@ -7,7 +7,7 @@ import BooksPage from "./Pages/BooksPage/BooksPage";
 import Cart_Page from "./Pages/Cart_Page/Cart_Page";
 import Footer from "./components/Footer/Footer";
 import { useState, createContext } from "react";
-
+import updateCart from "./fetchdata";
 
 
 export const CartContext = createContext();

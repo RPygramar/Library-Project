@@ -225,3 +225,12 @@ def cart():
     cart = {"cart": [data], "price":price}
     db.cart.insert_one(cart)
     return jsonify({"message": "Books added to cart"})
+
+
+@app.route("/books/cart/<cart>/<price>", methods=["POST"])
+def cart_checkout(cart, price):
+    if not cart:
+        return jsonify({"message": "No data provided"}), 400
+    cart = {"cart": [cart], "price":price}
+    db.cart.insert_one(cart)
+    return jsonify({"message": "Books added to cart"})

@@ -72,3 +72,17 @@ export function fetchBookByID(id) {
       throw error; // Re-throw the error to propagate it to the caller
     });
 }
+
+export function updateCart(cart, price) {
+    return fetch(`http://localhost:3030/cart/${cart}/${price}`)
+        .then((response) => {
+        if (!response.ok) {
+            throw new Error("Error loading data");
+        }
+        return response.json();
+        })
+        .catch((error) => {
+        console.error("An error occurred: ", error);
+        throw error; // Re-throw the error to propagate it to the caller
+        });
+}
