@@ -26,6 +26,9 @@ def parse_json(data):
 
 @app.route('/books/target/<target>/order/<order>/page/<page>', methods=['GET'])
 def get_books_sorted(target, order, page):
+    if int(page) < 1 or int(page) > total:
+        return jsonify({"message": "Page number out of range"}), 404
+
     books = list(db.books.find().sort(target, int(order)).skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents({})
     if len(books) == 0:
@@ -35,6 +38,9 @@ def get_books_sorted(target, order, page):
 
 @app.route('/books/page/<page>', methods=['GET'])
 def get_books_page(page):
+    if int(page) < 1 or int(page) > total:
+        return jsonify({"message": "Page number out of range"}), 404
+
     books = list(db.books.find().skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents({})
     if len(books) == 0:
@@ -43,10 +49,13 @@ def get_books_page(page):
 
 @app.route('/books/category/<category>/page/<page>', methods=['GET'])
 def get_books_by_category(category, page):
+    if int(page) < 1 or int(page) > total:
+        return jsonify({"message": "Page number out of range"}), 404
     books = list(db.books.find({"categories": category}).skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents( {"categories": category})
     if len(books) == 0:
         return jsonify({"message": "Books not found"}), 404
+
     return jsonify({"books": parse_json(books), "total": total})
 
 @app.route('/books/author/<author>/page/<page>', methods=['GET'])
@@ -86,7 +95,7 @@ def get_books_by_category_order(category, target, order, page):
 
 
 @app.route('/books/author/<author>/target/<target>/order/<order>/page/<page>', methods=['GET'])
-def get_books_by_author_order(author, target, order, page):
+def get_books_by_author_sort(author, target, order, page):
     books = list(db.books.find({"authors": author}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
     total = db.books.count_documents({"authors": author})
     if len(books) == 0:
