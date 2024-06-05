@@ -13,7 +13,7 @@ CORS(app)
 
 app.config['SECRET_KEY'] = 'SEGREDO'
 
-client = MongoClient("mongodb+srv://edkkr:rogerinhocabecadepedra123@library.uvcntye.mongodb.net/",
+client = MongoClient("SECRET_API_KEY",
         tls=True,tlsAllowInvalidCertificates=True)
 
 db = client["library"]
