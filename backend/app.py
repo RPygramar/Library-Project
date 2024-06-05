@@ -26,11 +26,15 @@ def parse_json(data):
 
 @app.route('/books/target/<target>/order/<order>/page/<page>', methods=['GET'])
 def get_books_sorted(target, order, page):
-    if int(page) < 1 or int(page) > total:
-        return jsonify({"message": "Page number out of range"}), 404
+    if int(page) < 1:
+        return jsonify({"message": "Page number out of range"}), 400
+
+    if int(order) not in [1, -1]:
+        return jsonify({"message": "Please specify the order like this: 1 for ASC (Ascending) and -1 for DESC (Descending)"}), 400
 
     books = list(db.books.find().sort(target, int(order)).skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents({})
+
     if len(books) == 0:
         return jsonify({"message": "Books not found"}), 404
 
@@ -38,8 +42,8 @@ def get_books_sorted(target, order, page):
 
 @app.route('/books/page/<page>', methods=['GET'])
 def get_books_page(page):
-    if int(page) < 1 or int(page) > total:
-        return jsonify({"message": "Page number out of range"}), 404
+    if int(page) < 1:
+        return jsonify({"message": "Page number out of range"}), 400
 
     books = list(db.books.find().skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents({})
@@ -49,8 +53,8 @@ def get_books_page(page):
 
 @app.route('/books/category/<category>/page/<page>', methods=['GET'])
 def get_books_by_category(category, page):
-    if int(page) < 1 or int(page) > total:
-        return jsonify({"message": "Page number out of range"}), 404
+    if int(page) < 1:
+        return jsonify({"message": "Page number out of range"}), 400
     books = list(db.books.find({"categories": category}).skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents( {"categories": category})
     if len(books) == 0:
@@ -60,6 +64,9 @@ def get_books_by_category(category, page):
 
 @app.route('/books/author/<author>/page/<page>', methods=['GET'])
 def get_books_by_author(author, page):
+    if int(page) < 1:
+        return jsonify({"message": "Page number out of range"}), 400
+
     books = list(db.books.find({"authors": author}).skip((int(page) -1 )* 10).limit(10))
     total = db.books.count_documents({"authors": author})
     if len(books) == 0:
@@ -77,6 +84,12 @@ def get_books_by_category_and_author(category, author, page):
 
 @app.route('/books/category/<category>/author/<author>/target/<target>/order/<order>/page/<page>', methods=['GET'])
 def get_books_by_category_and_author_order(category, author, target, order, page):
+    if int(page) < 1:
+        return jsonify({"message": "Page number out of range"}), 400
+
+    if int(order) not in [1, -1]:
+        return jsonify({"message": "Please specify the order like this: 1 for ASC (Ascending) and -1 for DESC (Descending)"}), 400
+
     books = list(db.books.find({"categories": category, "authors": author}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
     total = db.books.count_documents({"categories": category,
                                       "authors": author})  # Correctly get the total count of documents matching both criteria
@@ -96,6 +109,12 @@ def get_books_by_category_order(category, target, order, page):
 
 @app.route('/books/author/<author>/target/<target>/order/<order>/page/<page>', methods=['GET'])
 def get_books_by_author_sort(author, target, order, page):
+    if int(page) < 1:
+        return jsonify({"message": "Page number out of range"}), 400
+
+    if int(order) not in [1, -1]:
+        return jsonify({"message": "Please specify the order like this: 1 for ASC (Ascending) and -1 for DESC (Descending)"}), 400
+
     books = list(db.books.find({"authors": author}).sort(target, int(order)).skip((int(page) -1) * 10).limit(10))
     total = db.books.count_documents({"authors": author})
     if len(books) == 0:
@@ -264,7 +283,7 @@ def get_books_by_autor(autor):
 
 
 @app.route("/books/ano/<int:ano>", methods=["GET"])
-def get_books_by_ano(ano):
+def get_books_by_year(ano):
     initial_data = datetime(ano, 1, 1)
     final_data = datetime(ano, 12, 31)
     page = int(request.args.get("page", 1))
